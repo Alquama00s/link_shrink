@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/linkshrink
+    username: backend
+    password: pass_876
+  jpa:
+    properties:
+      hibernate:
+        default_schema: linkshrink_sch
