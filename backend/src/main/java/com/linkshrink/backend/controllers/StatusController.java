@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.linkshrink.backend.entity.Status;
 
 @RestController
-@RequestMapping("/status")
+@RequestMapping("/api/status")
 public class StatusController {
 
     @GetMapping("")

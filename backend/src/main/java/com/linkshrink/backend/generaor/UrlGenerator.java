@@ -1,6 +1,6 @@
 package com.linkshrink.backend.generaor;
 
-public interface GeneratorInterface {
+public interface UrlGenerator {
 
     String generateShortUrl();
 
