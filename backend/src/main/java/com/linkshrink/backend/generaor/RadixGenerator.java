@@ -1,5 +1,6 @@
 package com.linkshrink.backend.generaor;
 
+import com.linkshrink.backend.entity.Urls;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -15,8 +16,6 @@ import java.util.Map;
 // find data in database (string comparison is slower that number comparison)
 
 // the generation of unique url takes O(ln(number)/ln(CHARACTER_SET.length())) no extra space
-// the reverse generation takes O(URL_LENGTH) time with O(CHARACTER_SET.length()) auxiliary space
-//thus url redirection is very fast
 
 @Component
 @Primary
@@ -24,7 +23,6 @@ public class RadixGenerator implements UrlGenerator {
 
     private static final String CHARACTER_SET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    private static Map<Character,Integer> CHARACTER_SET_INDEX=new HashMap<>();
 
     private static final int URL_LENGTH=7;
     private static final long MAX_VAL=(long)Math.pow(CHARACTER_SET.length(),URL_LENGTH)-1;
@@ -32,17 +30,14 @@ public class RadixGenerator implements UrlGenerator {
 
     private EntityManager entityManager;
 
-    static {
-        for(int i=0;i<CHARACTER_SET.length();i++){
-            CHARACTER_SET_INDEX.put(CHARACTER_SET.charAt(i),i);
-        }
-    }
 
     @Autowired
     public RadixGenerator(EntityManager entityManager) {
         this.entityManager = entityManager;
-        Object ob = entityManager.createQuery("select max(id) from urls")
+        Object ob = entityManager.createQuery("select max(id) from Urls", Urls.class)
                 .getSingleResult();
+
+        System.out.println(ob);
 
         long max = ob==null?0:(long)ob;
 
@@ -70,26 +65,12 @@ public class RadixGenerator implements UrlGenerator {
         return RadixString.toString();
     }
 
-    public static long convertFromRadixString(String RadixString) {
-        int base = CHARACTER_SET.length();
-        long result = 0;
-        int power = 0;
-
-        for (int i = RadixString.length() - 1; i >= 0; i--) {
-            char c = RadixString.charAt(i);
-            int digitValue = CHARACTER_SET_INDEX.get(c);
-            result += digitValue * Math.pow(base, power);
-            power++;
-        }
-
-        return result;
-    }
 
     @Override
     public String generateShortUrl(){
 
         try {
-            return convertToRadixString(++CURRENT_VAL);
+            return String.format("%"+URL_LENGTH+"s",convertToRadixString(++CURRENT_VAL)).replace(' ',CHARACTER_SET.charAt(0));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

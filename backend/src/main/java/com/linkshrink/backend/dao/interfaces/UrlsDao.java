@@ -2,9 +2,9 @@ package com.linkshrink.backend.dao.interfaces;
 
 import com.linkshrink.backend.entity.Urls;
 
-public interface UrlsDaoInterface {
+public interface UrlsDao {
 
-    int save(Urls url);
+    long save(Urls url);
 
     int delete(int id);
 }

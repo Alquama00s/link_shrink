@@ -3,17 +3,25 @@ package com.linkshrink.backend.entity;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
-import java.time.Duration;
 
 
 @Entity
 @Table(name = "urls")
 public class Urls {
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private long id;
+
 
     @Column(name = "long_url")
     private String longUrl;
@@ -26,10 +34,10 @@ public class Urls {
 
 
     @Column(name = "expiry_after")
-    private Duration interval;
+    private Timestamp interval;
 
 
-    public Urls(String longUrl, String shortUrl, Timestamp creationTime, Duration interval) {
+    public Urls(String longUrl, String shortUrl, Timestamp creationTime, Timestamp interval) {
         this.longUrl = longUrl;
         this.shortUrl = shortUrl;
         this.creationTime = creationTime;
@@ -40,14 +48,6 @@ public class Urls {
         this.longUrl = longUrl;
         this.shortUrl = shortUrl;
         this.creationTime = creationTime;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getLongUrl() {
@@ -74,11 +74,11 @@ public class Urls {
         this.creationTime = creationTime;
     }
 
-    public Duration getInterval() {
+    public Timestamp getInterval() {
         return interval;
     }
 
-    public void setInterval(Duration interval) {
+    public void setInterval(Timestamp interval) {
         this.interval = interval;
     }
 
