@@ -47,7 +47,7 @@ public class RadixGenerator implements UrlGenerator {
 
     private static String convertToRadixString(long number)throws Exception {
         if(number>MAX_VAL){
-            throw new Exception("the value: "+number+" exceeds system capacity");
+            throw new Exception("the value: "+number+" exceeds system capacity!");
         }
         if (number == 0) {
             return CHARACTER_SET.substring(0,1);
