@@ -7,4 +7,6 @@ public interface UrlsDao {
     long save(Urls url);
 
     int delete(int id);
+
+    Urls getUrl(String shortUrl);
 }

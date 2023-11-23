@@ -1,10 +1,10 @@
 package com.linkshrink.backend.controllers;
 
 
+import com.linkshrink.backend.controllers.generic.GenericAPIController;
 import com.linkshrink.backend.dao.interfaces.UrlsDao;
 import com.linkshrink.backend.entity.Urls;
 import com.linkshrink.backend.generaor.UrlGenerator;
-import org.antlr.v4.runtime.misc.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/urls")
-public class UrlsController extends GenericController{
+public class UrlsController extends GenericAPIController {
 
 
     private UrlGenerator urlGenerator;

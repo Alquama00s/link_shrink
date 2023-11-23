@@ -7,3 +7,7 @@ spring:
     properties:
       hibernate:
         default_schema: linkshrink_sch
+
+
+fallbacks:
+  viewUrl: https://www.bing.com

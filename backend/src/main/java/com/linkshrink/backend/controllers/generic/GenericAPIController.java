@@ -1,7 +1,6 @@
-package com.linkshrink.backend.controllers;
+package com.linkshrink.backend.controllers.generic;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -9,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class GenericController {
+public class GenericAPIController {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Map<String,String> handleException(Exception ex){

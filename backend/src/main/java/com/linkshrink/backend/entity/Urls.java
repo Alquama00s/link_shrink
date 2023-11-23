@@ -9,13 +9,7 @@ import java.sql.Timestamp;
 @Table(name = "urls")
 public class Urls {
 
-    public long getId() {
-        return id;
-    }
 
-    public void setId(long id) {
-        this.id = id;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +31,9 @@ public class Urls {
     private Timestamp interval;
 
 
+    public Urls() {
+    }
+
     public Urls(String longUrl, String shortUrl, Timestamp creationTime, Timestamp interval) {
         this.longUrl = longUrl;
         this.shortUrl = shortUrl;
@@ -48,6 +45,15 @@ public class Urls {
         this.longUrl = longUrl;
         this.shortUrl = shortUrl;
         this.creationTime = creationTime;
+    }
+
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getLongUrl() {

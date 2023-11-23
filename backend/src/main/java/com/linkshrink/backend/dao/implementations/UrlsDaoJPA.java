@@ -28,4 +28,11 @@ public class UrlsDaoJPA implements UrlsDao {
                 .setParameter("id",id)
                 .executeUpdate();
     }
+
+    @Override
+    public Urls getUrl(String shortUrl) {
+        return entityManager.createQuery("select u from Urls u where u.shortUrl = :shortUrl",Urls.class)
+                .setParameter("shortUrl",shortUrl)
+                .getSingleResult();
+    }
 }
