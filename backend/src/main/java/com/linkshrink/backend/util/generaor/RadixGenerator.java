@@ -1,13 +1,10 @@
-package com.linkshrink.backend.generaor;
+package com.linkshrink.backend.util.generaor;
 
 import com.linkshrink.backend.entity.Urls;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
-import java.util.Map;
 
 //This class implements url generator as Radix generator
 //This takes a number and converts it into `CHARACTER_SET.length()` base string
@@ -78,9 +75,9 @@ public class RadixGenerator implements UrlGenerator {
 
     @Override
     public boolean urlExist(String url) {
-        Object ob = entityManager.createQuery("select id from urls u where u.short_url = :url")
+         long cnt = (long)entityManager.createQuery("select count(*) from Urls u where u.shortUrl = :url")
                 .setParameter("url",url)
                 .getSingleResult();
-        return ob!=null;
+        return cnt!=0;
     }
 }

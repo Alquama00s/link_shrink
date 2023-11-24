@@ -2,9 +2,11 @@ package com.linkshrink.backend.controllers.rest;
 
 
 import com.linkshrink.backend.controllers.advice.ApiControllerAdvice;
+import com.linkshrink.backend.customException.KnownException;
 import com.linkshrink.backend.dao.interfaces.UrlsDao;
 import com.linkshrink.backend.entity.Urls;
-import com.linkshrink.backend.generaor.UrlGenerator;
+import com.linkshrink.backend.util.generaor.UrlGenerator;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,13 +34,15 @@ public class UrlsController extends ApiControllerAdvice {
     }
 
     @PostMapping("/create")
-    public Urls create(@RequestBody HashMap<String,String> request){
-        Urls url;
-        var now = new Timestamp(System.currentTimeMillis());
-        if(request.get("expiry")==null){
-            url = new Urls(request.get("url"),urlGenerator.generateShortUrl(),now);
-        }else{
-            url = new Urls(request.get("url"),urlGenerator.generateShortUrl(),now, Timestamp.from(now.toInstant().plus(Duration.parse(request.get("expiry")))));
+    public Urls create(@RequestBody @Valid Urls url) throws Exception{
+
+        if(url.getShortUrl()!=null&&urlGenerator.urlExist(url.getShortUrl())){
+
+            throw new KnownException("Url already exist");
+        }
+
+        if(url.getShortUrl()==null){
+            url.setShortUrl(urlGenerator.generateShortUrl());
         }
         urlDao.save(url);
         return  url;

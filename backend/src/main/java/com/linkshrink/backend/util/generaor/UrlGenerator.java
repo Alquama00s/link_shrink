@@ -1,4 +1,4 @@
-package com.linkshrink.backend.generaor;
+package com.linkshrink.backend.util.generaor;
 
 public interface UrlGenerator {
 

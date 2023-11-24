@@ -1,6 +1,10 @@
 package com.linkshrink.backend.entity;
 
+import com.linkshrink.backend.util.generaor.UrlGenerator;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.validator.constraints.URL;
 
 import java.sql.Timestamp;
 
@@ -18,35 +22,21 @@ public class Urls {
 
 
     @Column(name = "long_url")
+    @URL
     private String longUrl;
 
     @Column(name = "short_url")
+    @Pattern(regexp = "^[a-zA-Z0-9-]+$",message = "Short Url must only contain alphanumeric character and `-`")
     private String shortUrl;
 
     @Column(name = "created_on")
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Timestamp creationTime;
 
 
     @Column(name = "expiry_after")
     private Timestamp interval;
-
-
-    public Urls() {
-    }
-
-    public Urls(String longUrl, String shortUrl, Timestamp creationTime, Timestamp interval) {
-        this.longUrl = longUrl;
-        this.shortUrl = shortUrl;
-        this.creationTime = creationTime;
-        this.interval = interval;
-    }
-
-    public Urls(String longUrl, String shortUrl, Timestamp creationTime) {
-        this.longUrl = longUrl;
-        this.shortUrl = shortUrl;
-        this.creationTime = creationTime;
-    }
-
 
     public long getId() {
         return id;
