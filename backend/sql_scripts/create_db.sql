@@ -2,8 +2,9 @@
 drop table if exists linkshrink_sch.urls;
 create table linkshrink_sch.urls (
 	id serial primary key,
-	short_url varchar(16) not null unique,
+	short_url varchar(1000) not null unique,
 	long_url varchar(2000) not null,
+	generated boolean not null,
 	created_on timestamp not null default CURRENT_TIMESTAMP,
 	expiry_after timestamp
 	

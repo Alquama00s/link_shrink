@@ -39,6 +39,13 @@ public class ApiControllerAdvice {
         return new ApiErrorResponse("Resource mismatch");
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ApiErrorResponse handleRuntimeException(RuntimeException ex){
+        if(ex.getCause()==null)return handleException(ex);
+        return new ApiErrorResponse(ex.getCause().getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiErrorResponse handleException(Exception ex){

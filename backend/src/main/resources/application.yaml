@@ -8,6 +8,6 @@ spring:
       hibernate:
         default_schema: linkshrink_sch
 
-
 fallbacks:
   viewUrl: https://www.bing.com
+  expiryDuration: P1DT2H
