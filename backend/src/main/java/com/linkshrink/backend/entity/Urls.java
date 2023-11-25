@@ -1,6 +1,7 @@
 package com.linkshrink.backend.entity;
 
-import com.linkshrink.backend.util.generaor.UrlGenerator;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.linkshrink.backend.util.deserializer.TimestampIntervalDeserializer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.annotations.CreationTimestamp;
@@ -36,7 +37,8 @@ public class Urls {
 
 
     @Column(name = "expiry_after")
-    private Timestamp interval;
+    @JsonDeserialize(using = TimestampIntervalDeserializer.class)
+    private Timestamp expiryAfter;
 
     public long getId() {
         return id;
@@ -70,12 +72,12 @@ public class Urls {
         this.creationTime = creationTime;
     }
 
-    public Timestamp getInterval() {
-        return interval;
+    public Timestamp getExpiryAfter() {
+        return expiryAfter;
     }
 
-    public void setInterval(Timestamp interval) {
-        this.interval = interval;
+    public void setExpiryAfter(Timestamp expiryAfter) {
+        this.expiryAfter = expiryAfter;
     }
 
     
