@@ -2,6 +2,7 @@ package com.linkshrink.backend.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.linkshrink.backend.customException.KnownException;
+import com.linkshrink.backend.util.customValidators.ValidateShortUrl;
 import com.linkshrink.backend.util.deserializer.TimestampIntervalDeserializer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -15,6 +16,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "urls")
+@ValidateShortUrl
 public class Urls {
 
 
@@ -30,7 +32,6 @@ public class Urls {
     private String longUrl;
 
     @Column(name = "short_url")
-    @Pattern(regexp = "^[a-zA-Z0-9-@]+$",message = "Short Url must only contain alphanumeric character and `-`")
     private String shortUrl;
 
     @Column(name = "generated")
@@ -47,17 +48,6 @@ public class Urls {
     @JsonDeserialize(using = TimestampIntervalDeserializer.class)
     private Timestamp expiryAfter;
 
-
-
-    @PrePersist
-    void modifyGeneratedUrl() throws KnownException {
-        if(!shortUrl.matches("^[a-zA-Z0-9-]+$")){
-            throw new KnownException("Short Url must only contain alphanumeric character and `-`");
-        }
-        if(generated){
-            shortUrl="@"+shortUrl;
-        }
-    }
 
     public long getId() {
         return id;

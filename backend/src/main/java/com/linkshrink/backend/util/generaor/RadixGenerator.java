@@ -100,7 +100,7 @@ public class RadixGenerator extends UrlGenerator {
         String url = String.format("%" + URL_LENGTH + "s", convertToRadixString(CURRENT_VAL)).replace(' ', CHARACTER_SET.charAt(0));
         CURRENT_VAL++;
         CURRENT_VAL %= MAX_VAL;
-        return url;
+        return "@"+url;
 
     }
 }

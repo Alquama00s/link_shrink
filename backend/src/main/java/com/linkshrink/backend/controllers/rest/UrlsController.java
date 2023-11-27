@@ -39,7 +39,7 @@ public class UrlsController extends ApiControllerAdvice {
     }
 
     @PostMapping("/create")
-    public Urls create(@RequestBody @Valid Urls url) throws Exception{
+    public Urls create(@RequestBody Urls url) throws Exception{
 
         if(url.getShortUrl()!=null&&urlGenerator.urlExist(url.getShortUrl())){
 

@@ -42,7 +42,7 @@ public abstract class UrlGenerator {
     public final String getShortUrl()throws Exception{
         deleteExpiredUrls();
         String url = generateShortUrl();
-        if(urlExist("@"+url)){
+        if(urlExist(url)){
             throw new KnownException("Generated Url capacity reached");
         }
         return url;
