@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: backend
+    password: pass_876
+fallbacks:
+  viewUrl: https://www.bing.com
+  expiryDuration: P1DT2H
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type.descriptor.sql: trace

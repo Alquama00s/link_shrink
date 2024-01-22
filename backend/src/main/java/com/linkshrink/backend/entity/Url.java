@@ -1,15 +1,12 @@
 package com.linkshrink.backend.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.linkshrink.backend.customException.KnownException;
 import com.linkshrink.backend.util.customValidators.ValidateShortUrl;
 import com.linkshrink.backend.util.deserializer.TimestampIntervalDeserializer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.URL;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.sql.Timestamp;
 
@@ -17,7 +14,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "urls")
 @ValidateShortUrl
-public class Urls {
+public class Url {
 
 
 

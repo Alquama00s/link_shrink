@@ -4,9 +4,8 @@ package com.linkshrink.backend.controllers.rest;
 import com.linkshrink.backend.controllers.advice.ApiControllerAdvice;
 import com.linkshrink.backend.customException.KnownException;
 import com.linkshrink.backend.dao.interfaces.UrlsDao;
-import com.linkshrink.backend.entity.Urls;
-import com.linkshrink.backend.util.generaor.UrlGenerator;
-import jakarta.validation.Valid;
+import com.linkshrink.backend.entity.Url;
+import com.linkshrink.backend.util.generator.UrlGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -39,15 +38,16 @@ public class UrlsController extends ApiControllerAdvice {
     }
 
     @PostMapping("/create")
-    public Urls create(@RequestBody Urls url) throws Exception{
+    public Url create(@RequestBody Url url) throws Exception{
 
-        if(url.getShortUrl()!=null&&urlGenerator.urlExist(url.getShortUrl())){
+        if(url.getShortUrl()!=null&&urlDao.urlExist(url.getShortUrl())){
 
             throw new KnownException("Url already exist");
         }
 
         if(url.getShortUrl()==null){
-            url.setShortUrl(urlGenerator.getShortUrl());
+            //generating random urls if collision occurs db wil throw error
+            url.setShortUrl(urlGenerator.generateShortUrl());
             var expAfter=Timestamp
                     .from(new Timestamp(System.currentTimeMillis())
                             .toInstant()
@@ -60,7 +60,7 @@ public class UrlsController extends ApiControllerAdvice {
     }
 
     @GetMapping("/get")
-    public Urls get(@RequestParam(value = "short_url") String shortUrl){
+    public Url get(@RequestParam(value = "short_url") String shortUrl){
         return urlDao.getUrl(shortUrl);
     }
 }

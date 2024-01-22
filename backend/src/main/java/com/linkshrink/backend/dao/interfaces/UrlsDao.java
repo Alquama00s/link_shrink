@@ -1,12 +1,16 @@
 package com.linkshrink.backend.dao.interfaces;
 
-import com.linkshrink.backend.entity.Urls;
+import com.linkshrink.backend.entity.Url;
 
 public interface UrlsDao {
 
-    long save(Urls url);
+    long save(Url url);
 
     int delete(int id);
 
-    Urls getUrl(String shortUrl);
+    Url getUrl(String shortUrl);
+
+    default boolean urlExist(String shortUrl){
+        return getUrl(shortUrl)!=null;
+    }
 }
