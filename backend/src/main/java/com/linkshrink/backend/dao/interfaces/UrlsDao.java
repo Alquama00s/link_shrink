@@ -4,9 +4,9 @@ import com.linkshrink.backend.entity.Url;
 
 public interface UrlsDao {
 
-    long save(Url url);
+    long save(Url url)throws Exception;
 
-    int delete(int id);
+    int delete(Long id);
 
     Url getUrl(String shortUrl);
 
