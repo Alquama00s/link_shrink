@@ -51,7 +51,7 @@ The backend is being written on spring boot and can be started by ```mvn spring-
 You can use LinkShrink API to programmatically shorten URLs. Example using cURL:
 
 ```bash
-curl -X POST http://localhost/api/urls/create \
+curl -X POST http://localhost:8080/api/urls/create \
      -H "Content-Type: application/json" \
      -d '{
          "longUrl": "https://example.com/your-long-url"
