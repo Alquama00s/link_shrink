@@ -15,7 +15,7 @@ import java.time.Duration;
 
 @RestController
 @RequestMapping("/api/urls")
-public class UrlsController extends ApiControllerAdvice {
+public class UrlsController {
 
 
 

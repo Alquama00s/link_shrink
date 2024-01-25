@@ -1,8 +1,12 @@
 package com.linkshrink.backend.controllers.rest;
 
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.linkshrink.backend.dao.implementations.UrlsDaoJPA;
 import com.linkshrink.backend.entity.Url;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,19 +33,23 @@ public class UrlsControllerTest {
     @Autowired
     private UrlsDaoJPA urlsDaoJPA;
 
-    private static MultiValueMap<String,String> generalUrlParams;
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    private static Map<String, String> generalUrlParams;
 
     @BeforeAll
-    public static void setUpGlobalConstants(){
-        generalUrlParams = new LinkedMultiValueMap<String, String>();
-        generalUrlParams.add("longUrl","https://cloud.google.com/sql/docs/postgres/users");
-        generalUrlParams.add("expiryAfter","P3DT2H");
-        generalUrlParams.add("shortUrl","short-url");
+    public static void setUpGlobalConstants() {
+        generalUrlParams = new HashMap<String, String>();
+        generalUrlParams.put("longUrl", "https://cloud.google.com/sql/docs/postgres/users");
+        generalUrlParams.put("expiryAfter", "P3DT2H");
+        generalUrlParams.put("shortUrl", "short-url");
     }
+
     @BeforeEach
-    public void setUpMockData()throws Exception{
-        String[] shortUrl={"alfa-beta","delta","gamma"};
-        for(var s: shortUrl){
+    public void setUpMockData() throws Exception {
+        String[] shortUrl = { "alfa-beta", "delta", "gamma" };
+        for (var s : shortUrl) {
             Url url = new Url();
             url.setLongUrl("https://cloud.google.com/sql/docs/postgres/users");
             url.setShortUrl(s);
@@ -50,18 +58,22 @@ public class UrlsControllerTest {
     }
 
     @AfterEach
-    public void deleteMockData(){
+    public void deleteMockData() {
         jdbc.execute("delete from urls");
     }
 
     @Test
     @DisplayName(value = "New urls created")
-    public void createNewUrl() throws Exception{
-        MvcResult res = mockMvc.perform(MockMvcRequestBuilders.post("/api/urls/create")
-                .params(generalUrlParams))
+    public void createNewUrl() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/urls/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(generalUrlParams)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.longUrl").value(generalUrlParams.get("longUrl")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.shortUrl").value(generalUrlParams.get("shortUrl")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.generated").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
                 .andReturn();
-
     }
 }
