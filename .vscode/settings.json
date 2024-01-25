@@ -1,6 +1,0 @@
-{
-    "java.compile.nullAnalysis.mode": "automatic",
-    "java.configuration.updateBuildConfiguration": "automatic",
-    "editor.fontSize": 18,
-    "editor.fontFamily": "Ubuntu,Menlo, Monaco, 'Courier New', monospace"
-}
