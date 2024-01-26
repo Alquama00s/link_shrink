@@ -1,7 +1,7 @@
 # Roadmap
 
-1.  auto-generator  ✓  
-2. expiry system  ✓
+1. auto-generator  ✓  
+2. expiry system  
 3. user management
 4. authentication
 4. metrics collection
