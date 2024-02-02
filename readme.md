@@ -10,7 +10,7 @@ LinkShrink is a simple and efficient URL shortening service that allows you to s
   - [Installation](#installation)
   - [Usage](#usage)
 - [Wiki](https://github.com/Alquama00s/link_shrink/wiki)
-- [Contributing](https://github.com/Alquama00s/link_shrink/wiki/roadmap)
+- [Contributing](https://github.com/Alquama00s/link_shrink/wiki/Roadmap)
 - [License](./LICENSE)
 
 ## Getting Started
