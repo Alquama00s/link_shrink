@@ -1,7 +1,7 @@
 create database linkshrink;
 create user backend;
 create role application;
-create schema linkshrink_sch authorization commandcenter;
+create schema linkshrink_sch authorization application;
 grant usage, select, insert, update, delete on all tables in schema
 linkshrink_sch to application;
 grant connect on database linkshrink to application;
