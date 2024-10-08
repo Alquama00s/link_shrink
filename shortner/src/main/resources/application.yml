@@ -10,6 +10,16 @@ spring:
   application:
     name: shortner
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    prometheus:
+      enabled: true
+
+
 
 fallbacks:
   viewUrl: https://www.bing.com

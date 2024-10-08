@@ -56,3 +56,8 @@ curl -X POST http://localhost:8080/api/urls/create \
      -d '{
          "longUrl": "https://example.com/your-long-url"
      }'
+
+
+
+# metrics
+# http_server_requests_seconds_sum{job="redirectorms",uri="/{shortUrl}"}/http_server_requests_seconds_count{job="redirectorms",uri="/{shortUrl}"}
