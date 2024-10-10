@@ -1,10 +1,11 @@
-package com.linkshrink.redirector;
+package com.linkshrink.redirector.configurations;
 
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 
 @ConfigurationProperties(prefix = "fallbacks")
 public record FallbackConfig(String viewUrl) {
 }
+
+

@@ -2,9 +2,10 @@ spring:
   application:
     name: redirector
   redis:
-    host: localhost
-    port: 6379
-
+#    host: localhost
+#    port: 6379
+    timeoutSec: 30
+#    password: ""
 
 server:
   port: 8081
@@ -13,13 +14,13 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,prometheus
+        include: '*'
   endpoint:
     prometheus:
       enabled: true
-logging:
-  level:
-    root: DEBUG
+#logging:
+#  level:
+#    root: DEBUG
 
 
 

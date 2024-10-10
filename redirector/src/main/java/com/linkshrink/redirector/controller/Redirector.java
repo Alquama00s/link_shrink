@@ -1,11 +1,9 @@
 package com.linkshrink.redirector.controller;
 
-import com.linkshrink.redirector.FallbackConfig;
-import com.linkshrink.redirector.client.ShortnerClient;
+import com.linkshrink.redirector.configurations.FallbackConfig;
 import com.linkshrink.redirector.service.UrlService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +23,7 @@ public class Redirector {
 
     @GetMapping("/{shortUrl}")
     public RedirectView redirect(@PathVariable String shortUrl) {
-        return new RedirectView(urlService.getUrl(shortUrl).getLongUrl());
+        return new RedirectView(urlService.getLongUrl(shortUrl));
     }
 
 
