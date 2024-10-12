@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
+import io.lettuce.core.SetArgs;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import lombok.extern.slf4j.Slf4j;
@@ -70,7 +71,7 @@ public class Client {
         if (tryConnect()) {
             try {
                 var serValue = om.writeValueAsString(Value);
-                redisCommand.set(key, serValue);
+                redisCommand.set(key, serValue, SetArgs.Builder.ex(200));
             } catch (Exception e) {
                 log.error(e.toString());
             }
@@ -93,7 +94,7 @@ public class Client {
     public void rawPut(String key, String value) {
         if (tryConnect()) {
             try {
-                redisCommand.set(key, value);
+                redisCommand.set(key, value,SetArgs.Builder.ex(200));
             } catch (Exception e) {
                 log.error(e.toString());
             }
