@@ -7,26 +7,30 @@ import com.linkshrink.authn.utils.RoleUtils;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Data;
 
 import java.sql.Timestamp;
-import java.util.Collections;
 import java.util.List;
 
 @Data
 @Entity
+@Builder
 @Table(name = "clients")
 public class Client {
 
     @Id
-    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private int id;
 
     @NotNull
-    @Size(min=5,max = 20)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String clientId;
 
+    @Transient
+    @JsonProperty(value = "clientSecret",access = JsonProperty.Access.READ_ONLY)
+    private String secret;
 
     @NotNull
     @JsonIgnore
@@ -36,21 +40,25 @@ public class Client {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(
             name = "role_map_client",
             joinColumns = @JoinColumn(name = "client_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @JsonIgnore
     private List<Role> roles;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private int accessTokenValiditySec;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private int refreshTokenValiditySec;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Timestamp expiresOn;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private boolean isActive;
 
-    @JsonProperty("roles")
+    @JsonProperty(value = "scopes",access = JsonProperty.Access.READ_ONLY)
     public List<String> getSimpleRoles(){
         return RoleUtils.getSimpleRoles(roles);
     }

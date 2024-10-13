@@ -1,4 +1,4 @@
-package com.linkshrink.authn.Dto;
+package com.linkshrink.authn.Dto.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;

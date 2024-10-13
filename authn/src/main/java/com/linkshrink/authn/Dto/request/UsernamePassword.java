@@ -1,4 +1,4 @@
-package com.linkshrink.authn.Dto.users;
+package com.linkshrink.authn.Dto.request;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

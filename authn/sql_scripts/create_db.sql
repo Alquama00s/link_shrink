@@ -41,6 +41,7 @@ create table linkshrink_sch.roles(
 insert into linkshrink_sch.roles(name) values
 ('ROLE_USER'),
 ('ROLE_ADMIN');
+('ROLE_CLIENT')
 
 create table linkshrink_sch.role_map_user(
 	id serial primary key,
@@ -50,7 +51,7 @@ create table linkshrink_sch.role_map_user(
 
 create table linkshrink_sch.role_map_client(
 	id serial primary key,
-	user_id int references linkshrink_sch.users(id),
+	client_id int references linkshrink_sch.clients(id),
 	role_id int references linkshrink_sch.roles(id)
 );
 

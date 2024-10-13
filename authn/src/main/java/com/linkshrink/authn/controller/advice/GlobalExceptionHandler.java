@@ -1,8 +1,7 @@
 package com.linkshrink.authn.controller.advice;
 
-import com.linkshrink.authn.Dto.ApiErrorResponse;
+import com.linkshrink.authn.Dto.request.ApiErrorResponse;
 import com.linkshrink.authn.exceptions.GenericKnownException;
-import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageConversionException;

@@ -1,16 +1,17 @@
 package com.linkshrink.authn.controller;
 
 
-import com.linkshrink.authn.Dto.users.UsernamePassword;
+import com.linkshrink.authn.Dto.TokenDto;
+import com.linkshrink.authn.Dto.request.UsernamePassword;
 import com.linkshrink.authn.entity.User;
 import com.linkshrink.authn.service.UserService;
 import com.linkshrink.authn.validations.groups.RequestDTO;
+import com.nimbusds.jose.JOSEException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -28,8 +29,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public boolean authenticate(@RequestBody @Validated UsernamePassword credentials){
-        return userService.authenticate(credentials);
+    public TokenDto authenticate(@RequestBody @Validated UsernamePassword credentials) throws JOSEException {
+        return TokenDto.builder()
+                .token(userService.authenticate(credentials))
+                .build();
     }
 
     @GetMapping("/resource")
