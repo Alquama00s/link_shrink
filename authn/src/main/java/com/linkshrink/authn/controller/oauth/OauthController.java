@@ -75,9 +75,17 @@ public class OauthController {
 
     @PostMapping("/token")
     public TokenDto getToken(@RequestBody ClientDTO clientDTO) throws JOSEException {
-        return TokenDto.builder()
-                .token(clientService.authenticate(clientDTO))
-                .build();
+        return new TokenDto(clientService.authenticate(clientDTO));
+    }
+
+    @PostMapping("/token/encrypt")
+    public TokenDto getEncryptedToken(@RequestBody ClientDTO clientDTO) throws JOSEException {
+        return new TokenDto(clientService.getEncryptedToken(clientDTO));
+    }
+
+    @PostMapping("/decrypt")
+    public TokenDto getEncryptedToken(@RequestBody TokenDto tokenDto) throws JOSEException, ParseException {
+        return new TokenDto(jwtTokenService.decryptToken(tokenDto.getToken()));
     }
 
 

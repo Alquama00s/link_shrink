@@ -18,6 +18,8 @@ public class UsernamePassword {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    private boolean unEncrypted;
+
     public UsernamePasswordAuthenticationToken getToken(){
         return new UsernamePasswordAuthenticationToken(email,password);
     }

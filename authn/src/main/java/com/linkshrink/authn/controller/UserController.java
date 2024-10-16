@@ -1,6 +1,7 @@
 package com.linkshrink.authn.controller;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.linkshrink.authn.Dto.TokenDto;
 import com.linkshrink.authn.Dto.request.UsernamePassword;
 import com.linkshrink.authn.entity.User;
@@ -31,9 +32,9 @@ public class UserController {
 
     @PostMapping("/login")
     public TokenDto authenticate(@RequestBody @Validated UsernamePassword credentials) throws JOSEException {
-        return TokenDto.builder()
-                .token(userService.authenticate(credentials))
-                .build();
+        return credentials.isUnEncrypted()?
+                new TokenDto(userService.authenticate(credentials)):
+                new TokenDto(userService.getEncryptedToken(credentials));
     }
 
     @GetMapping("/profile")

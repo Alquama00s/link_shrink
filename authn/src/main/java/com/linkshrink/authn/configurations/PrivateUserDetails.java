@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 
 @Getter
@@ -45,5 +46,13 @@ public class PrivateUserDetails implements JwtSubject {
         return JwtSubject.super.getClaimBuilder()
                 .expirationTime(new Date(new Date().getTime() + 60 * 1000 * 5))
                 ;
+    }
+
+    @Override
+    public Map<String, Object> getSecurePayload() {
+        return Map.of(
+                "user.username",user.getEmail(),
+                "user.id",user.getId()
+        );
     }
 }

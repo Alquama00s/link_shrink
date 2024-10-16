@@ -1,6 +1,7 @@
 package com.linkshrink.authn.service;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.linkshrink.authn.Dto.request.UsernamePassword;
 import com.linkshrink.authn.configurations.PrivateUserDetails;
 import com.linkshrink.authn.entity.User;
@@ -43,6 +44,13 @@ public class UserService {
         if(!auth.isAuthenticated()) throw new GenericKnownException("Un authorized");
         var user = userRepository.findByEmail(credentials.getEmail()).orElseThrow();
         return jwtTokenService.getToken(new PrivateUserDetails(user));
+    }
+
+    public String getEncryptedToken(UsernamePassword credentials) throws JOSEException {
+        var auth = authenticationManager.authenticate(credentials.getToken());
+        if(!auth.isAuthenticated()) throw new GenericKnownException("Un authorized");
+        var user = userRepository.findByEmail(credentials.getEmail()).orElseThrow();
+        return jwtTokenService.getEncryptedToken(new PrivateUserDetails(user));
     }
 
     public User getUser(){

@@ -1,14 +1,16 @@
 package com.linkshrink.authn.service;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.linkshrink.authn.configurations.JwtSubject;
 import com.linkshrink.authn.configurations.PrivateClientDetails;
 import com.linkshrink.authn.configurations.PrivateUserDetails;
 import com.linkshrink.authn.entity.Client;
-import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.JWSAlgorithm;
-import com.nimbusds.jose.JWSHeader;
-import com.nimbusds.jose.KeySourceException;
+import com.linkshrink.authn.exceptions.GenericKnownException;
+import com.nimbusds.jose.*;
+import com.nimbusds.jose.crypto.RSADecrypter;
+import com.nimbusds.jose.crypto.RSAEncrypter;
 import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jose.jwk.JWKMatcher;
@@ -26,10 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -59,8 +58,55 @@ public class JwtTokenService {
 
     }
 
+    public String getEncryptedToken(JwtSubject subject) throws JOSEException {
+        // make a jwt with personally identifiable info
+        var signingjwk = getRandomKey();
+        var signer = new RSASSASigner(signingjwk);
+        JWTClaimsSet claimsSet = subject.getClaimBuilder()
+                .claim("pii",subject.getSecurePayload())
+                .build();
 
-    
+        JWSHeader jwsHeader =  new JWSHeader.Builder(JWSAlgorithm.RS256)
+                .keyID(signingjwk.getKeyID())
+                .build();
+
+        SignedJWT signedJWT = new SignedJWT(jwsHeader, claimsSet);
+        signedJWT.sign(signer);
+
+        // encrypt the jwt
+        var jwk = getRandomKey();
+        var payload = new Payload(signedJWT);
+
+        JWEHeader jweHeader =  new JWEHeader.Builder(JWEAlgorithm.RSA_OAEP_256,EncryptionMethod.A256GCM)
+                .keyID(jwk.getKeyID())
+                .contentType("JWT")
+                .build();
+
+        JWEObject jweObject = new JWEObject(jweHeader, payload);
+        jweObject.encrypt(new RSAEncrypter(jwk));
+
+        return jweObject.serialize();
+
+    }
+
+    public String decryptToken(String encryptedToken){
+        try{
+            var jwe = JWEObject.parse(encryptedToken);
+            var keySelector = new JWKMatcher.Builder()
+                    .keyID(jwe.getHeader().getKeyID())
+                    .build();
+            var jwk =jwks.get(new JWKSelector(keySelector),null).get(0);
+            jwe.decrypt(new RSADecrypter(jwk.toRSAKey()));
+            return jwe.getPayload().toSignedJWT().serialize();
+        }catch (ParseException ex){
+            throw new GenericKnownException("malformed token");
+        }catch (JOSEException ex){
+            throw new GenericKnownException("unknown token");
+        }
+    }
+
+
+
     public boolean introspect(String token){
         try{
             var jwt = SignedJWT.parse(token);

@@ -1,6 +1,7 @@
 package com.linkshrink.authn.service;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.linkshrink.authn.Dto.ClientDTO;
 import com.linkshrink.authn.configurations.PrivateClientDetails;
 import com.linkshrink.authn.configurations.PrivateUserDetails;
@@ -70,6 +71,14 @@ public class ClientService {
         if(!auth.isAuthenticated()) throw new GenericKnownException("Un authorized");
         var client = clientRepository.findByClientId(credentials.getClientId()).orElseThrow();
         return jwtTokenService.getToken(new PrivateClientDetails(client));
+    }
+
+
+    public String getEncryptedToken(ClientDTO credentials) throws JOSEException {
+        var auth = authenticationManager.authenticate(credentials.getToken());
+        if(!auth.isAuthenticated()) throw new GenericKnownException("Un authorized");
+        var client = clientRepository.findByClientId(credentials.getClientId()).orElseThrow();
+        return jwtTokenService.getEncryptedToken(new PrivateClientDetails(client));
     }
 
 

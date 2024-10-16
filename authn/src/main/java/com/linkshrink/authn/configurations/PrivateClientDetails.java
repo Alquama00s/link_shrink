@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 @AllArgsConstructor
 @Getter
@@ -40,7 +41,16 @@ public class PrivateClientDetails implements JwtSubject {
     @Override
     public JWTClaimsSet.Builder getClaimBuilder() {
         return JwtSubject.super.getClaimBuilder()
-                .claim("userId",client.getUserId())
                 .expirationTime(new Date(new Date().getTime() + client.getAccessTokenValiditySec() * 1000L));
+    }
+
+    @Override
+    public Map<String, Object> getSecurePayload() {
+        return Map.of(
+                "user.username",client.getUser().getEmail(),
+                "user.id",client.getUser().getId(),
+                "client.name", client.getClientId(),
+                "client.id",client.getId()
+        );
     }
 }
