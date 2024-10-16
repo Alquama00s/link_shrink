@@ -2,22 +2,21 @@ package com.linkshrink.authn.controller.oauth;
 
 
 import com.linkshrink.authn.Dto.TokenDto;
-import com.linkshrink.authn.Dto.response.ClientDTO;
+import com.linkshrink.authn.Dto.ClientDTO;
+import com.linkshrink.authn.service.ClientService;
 import com.linkshrink.authn.service.JwtTokenService;
-import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.KeySourceException;
 import com.nimbusds.jose.jwk.JWKMatcher;
 import com.nimbusds.jose.jwk.JWKSelector;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import jakarta.annotation.PostConstruct;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,6 +25,9 @@ public class OauthController {
 
     @Autowired
     JWKSource<SecurityContext> jwkSource;
+
+    @Autowired
+    ClientService clientService;
 
     @Autowired
     JwtTokenService jwtTokenService;
@@ -72,8 +74,10 @@ public class OauthController {
     }
 
     @PostMapping("/token")
-    public TokenDto getToken(@RequestBody ClientDTO clientDTO){
-
+    public TokenDto getToken(@RequestBody ClientDTO clientDTO) throws JOSEException {
+        return TokenDto.builder()
+                .token(clientService.authenticate(clientDTO))
+                .build();
     }
 
 

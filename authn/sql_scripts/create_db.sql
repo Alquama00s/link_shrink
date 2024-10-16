@@ -10,7 +10,7 @@ create table linkshrink_sch.users(
 	email varchar(100),
 	name varchar(100),
 	pwd varchar(200),
-	is_active boolean,
+	is_active boolean not null default false,
 	created_on timestamp not null default CURRENT_TIMESTAMP,
 	updated_on timestamp,
 	created_by int,
@@ -25,7 +25,7 @@ create table linkshrink_sch.clients(
 	access_token_validity_sec int,
 	refresh_token_validity_sec int,
 	expires_on timestamp,
-	is_active boolean,
+	is_active boolean not null default false,
 	created_on timestamp not null default CURRENT_TIMESTAMP,
 	updated_on timestamp,
 	created_by int,
@@ -35,24 +35,38 @@ create table linkshrink_sch.clients(
 create table linkshrink_sch.roles(
 	id serial primary key,
 	name varchar(100),
-	is_active boolean default true
+    is_active boolean not null default false,
+    created_on timestamp not null default CURRENT_TIMESTAMP,
+    updated_on timestamp,
+    created_by int,
+    updated_by int
 );
 
 insert into linkshrink_sch.roles(name) values
 ('ROLE_USER'),
-('ROLE_ADMIN');
-('ROLE_CLIENT')
+('ROLE_ADMIN'),
+('ROLE_CLIENT');
 
 create table linkshrink_sch.role_map_user(
 	id serial primary key,
 	user_id int references linkshrink_sch.users(id),
-	role_id int references linkshrink_sch.roles(id)
+	role_id int references linkshrink_sch.roles(id),
+	is_active boolean not null default false,
+    created_on timestamp not null default CURRENT_TIMESTAMP,
+    updated_on timestamp,
+    created_by int,
+    updated_by int
 );
 
 create table linkshrink_sch.role_map_client(
 	id serial primary key,
 	client_id int references linkshrink_sch.clients(id),
-	role_id int references linkshrink_sch.roles(id)
+	role_id int references linkshrink_sch.roles(id),
+    is_active boolean not null default false,
+    created_on timestamp not null default CURRENT_TIMESTAMP,
+    updated_on timestamp,
+    created_by int,
+    updated_by int
 );
 
 grant select, insert, update, delete on all tables in schema

@@ -11,6 +11,7 @@ import com.nimbusds.jose.JOSEException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +43,11 @@ public class UserService {
         if(!auth.isAuthenticated()) throw new GenericKnownException("Un authorized");
         var user = userRepository.findByEmail(credentials.getEmail()).orElseThrow();
         return jwtTokenService.getToken(new PrivateUserDetails(user));
+    }
+
+    public User getUser(){
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        return userRepository.findByEmail(auth.getName()).orElseThrow();
     }
 
 

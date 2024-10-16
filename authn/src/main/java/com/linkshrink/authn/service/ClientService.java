@@ -1,13 +1,20 @@
 package com.linkshrink.authn.service;
 
 
-import com.linkshrink.authn.Dto.response.ClientDTO;
+import com.linkshrink.authn.Dto.ClientDTO;
+import com.linkshrink.authn.configurations.PrivateClientDetails;
+import com.linkshrink.authn.configurations.PrivateUserDetails;
 import com.linkshrink.authn.entity.Client;
+import com.linkshrink.authn.entity.User;
+import com.linkshrink.authn.entity.builders.ClientBuilder;
+import com.linkshrink.authn.exceptions.GenericKnownException;
 import com.linkshrink.authn.repository.ClientRepository;
 import com.linkshrink.authn.repository.RoleRepository;
 import com.linkshrink.authn.repository.UserRepository;
+import com.nimbusds.jose.JOSEException;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class ClientService {
@@ -23,25 +31,49 @@ public class ClientService {
     UserRepository userRepository;
     RoleRepository roleRepository;
     PasswordEncoder passwordEncoder;
+    AuthenticationManager authenticationManager;
+    JwtTokenService jwtTokenService;
+
 
     public ClientDTO generateClient() {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        var user = userRepository.findByEmail(auth.getName()).orElseThrow();
+        var user = extractLoggedInUser();
         var cliRole = roleRepository.findById(3).orElseThrow();
-        var client = Client.builder()
-                .clientId(UUID.randomUUID().toString())
-                .secret(UUID.randomUUID().toString() + UUID.randomUUID().toString())
-                .user(user)
-                .roles(List.of(cliRole))
-                .accessTokenValiditySec(5*60)
-                .refreshTokenValiditySec(5*60)
-                .isActive(true)
-                .build();
-        client.setClientSecret(passwordEncoder.encode(client.getSecret()));
-        var savedClient = clientRepository.save(client);
 
-        return new ClientDTO(savedClient.getClientId(), savedClient.getClientSecret());
+        var client = new Client();
+        client.setClientId(UUID.randomUUID().toString());
+        client.setClientSecret(UUID.randomUUID() + UUID.randomUUID().toString());
+        client.setUserId(user.getId());
+        client.setRoles(List.of(cliRole));
+        client.setAccessTokenValiditySec(5*60);
+        client.setRefreshTokenValiditySec(5*60);
+        client.setActive(true);
 
+        var clientDTO = new ClientDTO(client.getClientId(), client.getClientSecret());
+
+        client.setClientSecret(passwordEncoder.encode(client.getClientSecret()));
+       clientRepository.save(client);
+
+        return clientDTO;
+    }
+
+    public List<Client> getAllClients(){
+        var user = extractLoggedInUser();
+        var c = clientRepository.findByUserId(user.getId());
+        log.info(c.toString());
+        return c;
+    }
+
+
+    public String authenticate(ClientDTO credentials) throws JOSEException {
+        var auth = authenticationManager.authenticate(credentials.getToken());
+        if(!auth.isAuthenticated()) throw new GenericKnownException("Un authorized");
+        var client = clientRepository.findByClientId(credentials.getClientId()).orElseThrow();
+        return jwtTokenService.getToken(new PrivateClientDetails(client));
+    }
+
+    private User extractLoggedInUser(){
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        return userRepository.findByEmail(auth.getName()).orElseThrow();
     }
 
 }

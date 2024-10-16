@@ -1,6 +1,7 @@
 package com.linkshrink.authn.service;
 
 
+import com.linkshrink.authn.configurations.PrivateClientDetails;
 import com.linkshrink.authn.configurations.PrivateUserDetails;
 import com.linkshrink.authn.entity.Client;
 import com.nimbusds.jose.JOSEException;
@@ -62,16 +63,16 @@ public class JwtTokenService {
 
     }
 
-    public String getToken(Client client) throws JOSEException {
+    public String getToken(PrivateClientDetails client) throws JOSEException {
         var jwk = getRandomKey();
         var signer = new RSASSASigner(jwk);
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
-                .subject(client.getClientId())
+                .subject(client.getClient().getClientId())
                 .jwtID(UUID.randomUUID().toString())
-                .claim("authorities",client.getSimpleRoles())
-                .claim("username",client.getUser().getEmail())
+                .claim("authorities",client.getClient().getSimpleRoles())
+                .claim("userId",client.getClient().getUserId())
                 .issuer("LinkShrink")
-                .expirationTime(new Date(new Date().getTime() + client.getAccessTokenValiditySec() * 1000L))
+                .expirationTime(new Date(new Date().getTime() + client.getClient().getAccessTokenValiditySec() * 1000L))
                 .build();
 
         JWSHeader jwsHeader =  new JWSHeader.Builder(JWSAlgorithm.RS256)

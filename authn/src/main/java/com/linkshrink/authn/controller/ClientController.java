@@ -1,7 +1,6 @@
 package com.linkshrink.authn.controller;
 
-import com.linkshrink.authn.Dto.response.ClientDTO;
-import com.linkshrink.authn.entity.Client;
+import com.linkshrink.authn.Dto.ClientDTO;
 import com.linkshrink.authn.service.ClientService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

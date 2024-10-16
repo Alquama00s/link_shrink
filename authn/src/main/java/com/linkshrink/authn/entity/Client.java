@@ -9,15 +9,18 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 
 import java.sql.Timestamp;
 import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
-@Builder
 @Table(name = "clients")
-public class Client {
+public class Client extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,16 +31,18 @@ public class Client {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String clientId;
 
-    @Transient
-    @JsonProperty(value = "clientSecret",access = JsonProperty.Access.READ_ONLY)
-    private String secret;
 
     @NotNull
     @JsonIgnore
     private String clientSecret;
 
+    @JsonIgnore
+    private int userId;
+
+    @JsonIgnore
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userId",insertable = false,updatable = false)
     private User user;
 
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
@@ -55,8 +60,6 @@ public class Client {
     private int refreshTokenValiditySec;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Timestamp expiresOn;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private boolean isActive;
 
     @JsonProperty(value = "scopes",access = JsonProperty.Access.READ_ONLY)
     public List<String> getSimpleRoles(){

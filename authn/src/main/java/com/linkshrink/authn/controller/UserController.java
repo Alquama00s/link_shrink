@@ -4,6 +4,7 @@ package com.linkshrink.authn.controller;
 import com.linkshrink.authn.Dto.TokenDto;
 import com.linkshrink.authn.Dto.request.UsernamePassword;
 import com.linkshrink.authn.entity.User;
+import com.linkshrink.authn.service.ClientService;
 import com.linkshrink.authn.service.UserService;
 import com.linkshrink.authn.validations.groups.RequestDTO;
 import com.nimbusds.jose.JOSEException;
@@ -21,6 +22,7 @@ import java.util.Map;
 public class UserController {
 
     UserService userService;
+    ClientService clientService;
 
 
     @PostMapping("/register")
@@ -33,6 +35,16 @@ public class UserController {
         return TokenDto.builder()
                 .token(userService.authenticate(credentials))
                 .build();
+    }
+
+    @GetMapping("/clients")
+    public Map<String,Object> getClients(){
+        return Map.of("clients",clientService.getAllClients());
+    }
+
+    @GetMapping("/profile")
+    public User getProfile(){
+        return userService.getUser();
     }
 
     @GetMapping("/resource")
