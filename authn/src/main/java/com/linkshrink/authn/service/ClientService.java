@@ -14,6 +14,7 @@ import com.linkshrink.authn.repository.UserRepository;
 import com.nimbusds.jose.JOSEException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -69,6 +70,15 @@ public class ClientService {
         if(!auth.isAuthenticated()) throw new GenericKnownException("Un authorized");
         var client = clientRepository.findByClientId(credentials.getClientId()).orElseThrow();
         return jwtTokenService.getToken(new PrivateClientDetails(client));
+    }
+
+
+    public boolean deleteClient(String clientId){
+        var user = extractLoggedInUser();
+        var client = clientRepository.findByClientId(clientId).orElseThrow();
+        if(client.getUserId()!=user.getId()) throw new GenericKnownException("could not delete", HttpStatus.UNAUTHORIZED);
+        clientRepository.delete(client);
+        return true;
     }
 
     private User extractLoggedInUser(){

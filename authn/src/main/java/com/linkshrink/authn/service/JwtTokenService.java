@@ -1,6 +1,7 @@
 package com.linkshrink.authn.service;
 
 
+import com.linkshrink.authn.configurations.JwtSubject;
 import com.linkshrink.authn.configurations.PrivateClientDetails;
 import com.linkshrink.authn.configurations.PrivateUserDetails;
 import com.linkshrink.authn.entity.Client;
@@ -40,16 +41,11 @@ public class JwtTokenService {
     Random random = new SecureRandom();
     HashMap<String,Date> revokedTokens = new HashMap<>();
 
-    public String getToken(PrivateUserDetails userDetails) throws JOSEException {
+    public String getToken(JwtSubject subject) throws JOSEException {
 
         var jwk = getRandomKey();
         var signer = new RSASSASigner(jwk);
-        JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
-                .subject(userDetails.getUsername())
-                .jwtID(UUID.randomUUID().toString())
-                .claim("authorities",userDetails.getUser().getSimpleRoles())
-                .issuer("LinkShrink")
-                .expirationTime(new Date(new Date().getTime() + 60 * 1000 * 5))
+        JWTClaimsSet claimsSet = subject.getClaimBuilder()
                 .build();
 
         JWSHeader jwsHeader =  new JWSHeader.Builder(JWSAlgorithm.RS256)
@@ -63,29 +59,8 @@ public class JwtTokenService {
 
     }
 
-    public String getToken(PrivateClientDetails client) throws JOSEException {
-        var jwk = getRandomKey();
-        var signer = new RSASSASigner(jwk);
-        JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
-                .subject(client.getClient().getClientId())
-                .jwtID(UUID.randomUUID().toString())
-                .claim("authorities",client.getClient().getSimpleRoles())
-                .claim("userId",client.getClient().getUserId())
-                .issuer("LinkShrink")
-                .expirationTime(new Date(new Date().getTime() + client.getClient().getAccessTokenValiditySec() * 1000L))
-                .build();
 
-        JWSHeader jwsHeader =  new JWSHeader.Builder(JWSAlgorithm.RS256)
-                .keyID(jwk.getKeyID())
-                .build();
-
-        SignedJWT signedJWT = new SignedJWT(jwsHeader, claimsSet);
-        signedJWT.sign(signer);
-
-        return signedJWT.serialize();
-
-    }
-
+    
     public boolean introspect(String token){
         try{
             var jwt = SignedJWT.parse(token);

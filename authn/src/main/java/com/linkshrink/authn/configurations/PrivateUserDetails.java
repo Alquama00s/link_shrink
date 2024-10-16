@@ -1,6 +1,7 @@
 package com.linkshrink.authn.configurations;
 
 import com.linkshrink.authn.entity.User;
+import com.nimbusds.jwt.JWTClaimsSet;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,11 +11,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 
 
 @Getter
 @AllArgsConstructor
-public class PrivateUserDetails implements UserDetails {
+public class PrivateUserDetails implements JwtSubject {
     private User user;
 
 
@@ -38,5 +40,10 @@ public class PrivateUserDetails implements UserDetails {
         return user.isActive();
     }
 
-
+    @Override
+    public JWTClaimsSet.Builder getClaimBuilder() {
+        return JwtSubject.super.getClaimBuilder()
+                .expirationTime(new Date(new Date().getTime() + 60 * 1000 * 5))
+                ;
+    }
 }

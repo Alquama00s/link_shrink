@@ -22,7 +22,6 @@ import java.util.Map;
 public class UserController {
 
     UserService userService;
-    ClientService clientService;
 
 
     @PostMapping("/register")
@@ -35,11 +34,6 @@ public class UserController {
         return TokenDto.builder()
                 .token(userService.authenticate(credentials))
                 .build();
-    }
-
-    @GetMapping("/clients")
-    public Map<String,Object> getClients(){
-        return Map.of("clients",clientService.getAllClients());
     }
 
     @GetMapping("/profile")

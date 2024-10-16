@@ -4,6 +4,7 @@ import com.linkshrink.authn.Dto.request.ApiErrorResponse;
 import com.linkshrink.authn.exceptions.GenericKnownException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -36,8 +37,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(GenericKnownException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiErrorResponse handleKnownException(GenericKnownException ex){
-        return ex.getResponse();
+    public ResponseEntity<ApiErrorResponse> handleKnownException(GenericKnownException ex){
+        return new ResponseEntity<>(ex.getResponse(),ex.getHttpStatus());
     }
 
     @ExceptionHandler(DisabledException.class)

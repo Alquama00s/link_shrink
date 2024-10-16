@@ -7,16 +7,23 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -28,6 +35,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
+@Slf4j
 @Configuration
 public class SecurityConfigs {
 
@@ -59,8 +67,16 @@ public class SecurityConfigs {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(ApplicationContext context,PasswordEncoder passwordEncoder) throws Exception {
+        var userDetailBeans = context.getBeansOfType(UserDetailsService.class);
+        var aps = new ArrayList<>(context.getBeansOfType(AuthenticationProvider.class).values());
+        aps.addAll(userDetailBeans.values().stream().map(i->{
+            var ap = new DaoAuthenticationProvider(passwordEncoder);
+            ap.setUserDetailsService(i);
+            return ap;
+        }).toList());
+        log.info(userDetailBeans.size()+"");
+        return new ProviderManager(aps);
     }
 
     @Bean
