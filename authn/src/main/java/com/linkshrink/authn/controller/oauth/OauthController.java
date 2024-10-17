@@ -34,16 +34,18 @@ public class OauthController {
 
     HashMap<String, Object> publicKeys;
 
+    HashMap<String,Object> bothKeys;
+
     @PostConstruct
     public void init() throws KeySourceException {
         publicKeys = new HashMap<>();
+        bothKeys = new HashMap<>();
         var matcher = new JWKMatcher.Builder()
                 .build();
         var keys = jwkSource.get(new JWKSelector(matcher), null);
         for (var i : keys) {
-            var publicParams = new HashMap<String, String>((Map<? extends String, ? extends String>) i.toPublicJWK().getRequiredParams());
-            publicParams.put("kid", i.getKeyID());
-            publicKeys.put(i.getKeyID(), publicParams);
+            publicKeys.put(i.getKeyID(), i.toPublicJWK().toJSONObject());
+            bothKeys.put(i.getKeyID(),i.toJSONObject());
         }
     }
 
@@ -51,6 +53,11 @@ public class OauthController {
     @GetMapping("/jwks")
     public Map<String, Object> getAvailableKeys() throws KeySourceException {
         return Map.of("keys", publicKeys.values());
+    }
+
+    @GetMapping("/protected/jwks")
+    public Map<String, Object> getProtectedKeys() throws KeySourceException {
+        return Map.of("keys", bothKeys.values());
     }
 
 

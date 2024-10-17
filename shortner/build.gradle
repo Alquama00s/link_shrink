@@ -25,8 +25,14 @@ dependencies {
 	implementation 'org.postgresql:postgresql'
 	implementation 'io.micrometer:micrometer-registry-prometheus'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+// https://mvnrepository.com/artifact/com.nimbusds/nimbus-jose-jwt
+	implementation 'com.nimbusds:nimbus-jose-jwt:9.41.2'
 
-
+	compileOnly 'org.projectlombok:lombok:1.18.34'
+	annotationProcessor 'org.projectlombok:lombok:1.18.34'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'com.h2database:h2'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
