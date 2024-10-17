@@ -15,4 +15,20 @@ public class StatusController {
         return new Status();
     }
 
+
+    @GetMapping("/admin")
+    public Status getStatusAdmin() {
+        return new Status();
+    }
+
+    @GetMapping("/enc")
+    public Status getStatusEnc() {
+        return new Status();
+    }
+
+    @GetMapping("/encAdmin")
+    public Status getStatusEncAdmin() {
+        return new Status();
+    }
+
 }

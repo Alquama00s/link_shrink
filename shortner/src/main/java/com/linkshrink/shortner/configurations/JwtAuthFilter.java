@@ -33,6 +33,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             var authorities = Optional.ofNullable(jwt.getJWTClaimsSet().getListClaim("authorities"))
                     .orElse(Collections.emptyList())
                     .stream().map(Object::toString).map(SimpleGrantedAuthority::new).toList();
+            log.info(authorities.toString());
             var subject = Optional.ofNullable(jwt.getJWTClaimsSet().getSubject())
                     .orElse("un specified");
             var pii = Optional.ofNullable(jwt.getJWTClaimsSet().getJSONObjectClaim("pii"))

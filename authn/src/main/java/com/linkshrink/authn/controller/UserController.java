@@ -4,6 +4,7 @@ package com.linkshrink.authn.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.linkshrink.authn.Dto.TokenDto;
 import com.linkshrink.authn.Dto.request.UsernamePassword;
+import com.linkshrink.authn.entity.Role;
 import com.linkshrink.authn.entity.User;
 import com.linkshrink.authn.service.ClientService;
 import com.linkshrink.authn.service.UserService;
@@ -45,6 +46,16 @@ public class UserController {
     @GetMapping("/resource")
     public Map<String,String> getProtectedResource(){
         return Map.of("protected","yes ok");
+    }
+
+    @PostMapping("/role/add")
+    public User addRole(@RequestBody Role role){
+        return userService.giveRole(role.getId());
+    }
+
+    @PostMapping("/role/remove")
+    public User removeRole(@RequestBody Role role){
+        return userService.removeRole(role.getId());
     }
 
 }

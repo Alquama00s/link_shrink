@@ -4,6 +4,7 @@ package com.linkshrink.authn.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.linkshrink.authn.Dto.request.UsernamePassword;
 import com.linkshrink.authn.configurations.PrivateUserDetails;
+import com.linkshrink.authn.entity.Role;
 import com.linkshrink.authn.entity.User;
 import com.linkshrink.authn.exceptions.GenericKnownException;
 import com.linkshrink.authn.repository.RoleRepository;
@@ -57,6 +58,28 @@ public class UserService {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findByEmail(auth.getName()).orElseThrow();
     }
+
+    public User giveRole(int roleId){
+        var user = getUser();
+        if(user.getRoles().stream().map(Role::getId).anyMatch(i->i==roleId)){
+            return user;
+        }
+        var role = roleRepository.findById(roleId);
+        if(role.isEmpty()) throw new GenericKnownException("invalid role id");
+        user.getRoles().add(role.get());
+        return userRepository.save(user);
+    }
+
+    public User removeRole(int roleId){
+        var user = getUser();
+        if(!user.getRoles().stream().map(Role::getId).anyMatch(i->i==roleId)){
+            return user;
+        }
+        user.getRoles().removeIf(i->i.getId()==roleId);
+        return userRepository.save(user);
+    }
+
+
 
 
 }

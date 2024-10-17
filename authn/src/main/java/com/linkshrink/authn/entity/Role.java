@@ -12,7 +12,6 @@ import org.springframework.security.core.GrantedAuthority;
 @Table(name = "roles")
 public class Role extends BaseEntity{
 
-    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private int id;

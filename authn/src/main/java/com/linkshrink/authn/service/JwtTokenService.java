@@ -24,6 +24,8 @@ import com.nimbusds.jwt.SignedJWT;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -62,7 +64,10 @@ public class JwtTokenService {
         // make a jwt with personally identifiable info
         var signingjwk = getRandomKey();
         var signer = new RSASSASigner(signingjwk);
+        var authorities = new ArrayList<>(subject.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
+        authorities.add("encrypted".toUpperCase());
         JWTClaimsSet claimsSet = subject.getClaimBuilder()
+                .claim("authorities",authorities)
                 .claim("pii",subject.getSecurePayload())
                 .build();
 
