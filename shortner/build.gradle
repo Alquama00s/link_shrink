@@ -7,6 +7,11 @@ plugins {
 group = 'com.linkshrink'
 version = '0.0.1-SNAPSHOT'
 
+bootJar{
+	archiveFileName="${project.name}.jar"
+}
+
+
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(17)
@@ -30,6 +35,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 // https://mvnrepository.com/artifact/com.nimbusds/nimbus-jose-jwt
 	implementation 'com.nimbusds:nimbus-jose-jwt:9.41.2'
+
+//	h2 db
+	implementation 'com.h2database:h2'
+//	sqlite db
+	implementation 'org.xerial:sqlite-jdbc'
+	implementation 'org.hibernate.orm:hibernate-community-dialects'
+
 
 	compileOnly 'org.projectlombok:lombok:1.18.34'
 	annotationProcessor 'org.projectlombok:lombok:1.18.34'

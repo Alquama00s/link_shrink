@@ -52,6 +52,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ApiErrorResponse handleException(Exception ex){
         log.error(ex.toString());
+        for(var st:ex.getStackTrace()){
+            log.error(st.toString());
+        }
         return ApiErrorResponse.builder().message("something went wrong").build();
     }
 

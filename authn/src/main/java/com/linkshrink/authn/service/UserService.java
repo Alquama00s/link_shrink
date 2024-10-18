@@ -34,8 +34,13 @@ public class UserService {
         var existingUser = userRepository.findByEmail(user.getEmail());
         if(existingUser.isPresent()) throw new GenericKnownException("Email already exist");
         user.setPwd(passwordEncoder.encode(user.getPassword()));
-        var defaultRole = roleRepository.findById(1).orElseThrow();
-        user.setRoles(List.of(defaultRole));
+        var defaultRole = roleRepository.findByName("ROLE_USER");
+        if(defaultRole.isEmpty()){
+            var role = new Role();
+            role.setName("ROLE_USER");
+            defaultRole = java.util.Optional.of(roleRepository.save(role));
+        }
+        user.setRoles(List.of(defaultRole.orElseThrow()));
         user.setActive(true);
         return userRepository.save(user);
     }

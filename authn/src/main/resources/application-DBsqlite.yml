@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:sqlite:./${spring.application.name}.sqlite
+    username:
+    password:
+    driverClassName: org.sqlite.JDBC
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    properties:
+      hibernate:
+#        show_sql: true
+        hbm2ddl:
+          auto: update
+        default_schema: null

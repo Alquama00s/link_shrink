@@ -9,6 +9,9 @@ spring:
         default_schema: linkshrink_sch
   application:
     name: shortner
+  
+  devtools:
+    add-properties: false
 
 management:
   endpoints:

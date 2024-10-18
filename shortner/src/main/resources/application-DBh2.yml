@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:${spring.application.name}
+    username:
+    password:
+  jpa:
+    properties:
+      hibernate:
+        ddl-auto: update
+        default_schema: null

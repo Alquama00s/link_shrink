@@ -9,6 +9,9 @@ spring:
     properties:
       hibernate:
         default_schema: linkshrink_sch
+        
+  devtools:
+    add-properties: false
 
 server:
   port: 8082
