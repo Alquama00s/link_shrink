@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+/* Core Data Grid CSS */
+@import 'ag-grid-community/styles/ag-grid.css';
+/* Quartz Theme Specific CSS */
+@import 'ag-grid-community/styles/ag-theme-quartz.css';
+
+
+ag-grid-angular{
+  width: 100%;
+  height: 100%;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

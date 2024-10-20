@@ -1,1 +1,11 @@
-<app-nav/>
+<app-nav />
+<div class="action-tab">
+  <mat-icon></mat-icon>
+</div>
+<div class="grid">
+  <ag-grid-angular
+    class="ag-theme-quartz-dark"
+    [rowData]="rowData"
+    [columnDefs]="colDefs"
+  />
+</div>
