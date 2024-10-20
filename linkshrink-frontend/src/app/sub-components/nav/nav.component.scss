@@ -1,0 +1,31 @@
+#main-nav{
+  width: calc(100% - 20px);
+  height: 50px;
+  background-color: aquamarine;
+  padding: 0px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#logo {
+  font-family: 'Roboto', sans-serif; /* Modern font */
+  font-size: 2em; /* Make it big and bold */
+  color: #fff; /* White text */
+  background-color: #6200ea; /* Vibrant purple background */
+  padding: 20px;
+  border-radius: 10px; /* Rounded corners */
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  transition: transform 0.3s, box-shadow 0.3s; /* Smooth hover effects */
+}
+
+#profile{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
