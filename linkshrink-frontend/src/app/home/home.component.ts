@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavComponent } from '../sub-components/nav/nav.component';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
+import { UrlService } from '../services/url.service';
 
 @Component({
   selector: 'app-home',
@@ -26,7 +27,12 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  constructor(private urlservice: UrlService) {}
+
+  ngOnInit(): void {
+    this.urlservice.getUrls().subscribe((res) => (this.rowData = res));
+  }
   showForm = false;
   longUrl = '';
   shortUrl = '';
@@ -43,23 +49,19 @@ export class HomeComponent {
   }
 
   addUrl() {
-    console.log(this.shortUrl)
-    console.log(this.longUrl)
-    this.closeForm()
+    console.log(this.shortUrl);
+    console.log(this.longUrl);
+    this.closeForm();
   }
 
-  rowData = [
-    { id: 1, make: 'Tesla', model: 'Model Y', price: 64950, electric: true },
-    { id: 2, make: 'Ford', model: 'F-Series', price: 33850, electric: false },
-    { id: 3, make: 'Toyota', model: 'Corolla', price: 29600, electric: false },
-  ];
+  rowData: Array<any> = [];
 
   // Column Definitions: Defines the columns to be displayed.
   colDefs: ColDef[] = [
-    { field: 'make' },
-    { field: 'model' },
-    { field: 'price' },
-    { field: 'electric' },
+    { field: 'id' },
+    { field: 'title' },
+    { field: 'body' },
+    { field: 'userId' },
     {
       field: 'actions',
       cellRenderer: ButtonComponent,
