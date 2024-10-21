@@ -1,6 +1,6 @@
 <app-nav />
 <div class="action-tab">
-  <mat-icon></mat-icon>
+  <div class="button" (click)="openForm()">Add url</div>
 </div>
 <div class="grid">
   <ag-grid-angular
@@ -8,4 +8,30 @@
     [rowData]="rowData"
     [columnDefs]="colDefs"
   />
+</div>
+
+<div *ngIf="showForm" class="popup-form">
+  <form>
+    <mat-form-field>
+      <mat-label>Url</mat-label>
+      <input matInput [(ngModel)]="longUrl" name="longUrl" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>short url</mat-label>
+      <input matInput [(ngModel)]="shortUrl" name="shortUrl" />
+    </mat-form-field>
+
+    <div class="button-box">
+      <button mat-flat-button color="primary" (click)="addUrl()">Submit</button>
+      <button
+        mat-raised-button
+        color="accent"
+        type="button"
+        (click)="closeForm()"
+      >
+        Close
+      </button>
+    </div>
+  </form>
 </div>

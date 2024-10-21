@@ -1,8 +1,32 @@
+@use '@angular/material' as mat;
+
 /* You can add global styles to this file, and also import other style files */
 /* Core Data Grid CSS */
 @import 'ag-grid-community/styles/ag-grid.css';
 /* Quartz Theme Specific CSS */
 @import 'ag-grid-community/styles/ag-theme-quartz.css';
+
+
+$primary-color:  #673AB7;
+$secondary-color: #009688;
+$secondary-color-dark: #017b6f;
+
+
+@include mat.core();
+
+$my-primary: mat.define-palette(mat.$deep-purple-palette, 500);
+$my-accent: mat.define-palette(mat.$teal-palette, A200, A100, A400);
+
+$my-theme: mat.define-light-theme((
+ color: (
+   primary: $my-primary,
+   accent: $my-accent,
+ ),
+ typography: mat.define-typography-config(),
+ density: 0,
+));
+
+@include mat.all-component-themes($my-theme);
 
 
 ag-grid-angular{
@@ -12,3 +36,34 @@ ag-grid-angular{
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+
+.button {
+  background-color: $secondary-color; /* Background color */
+  border: none; /* Remove default border */
+  color: white; /* Text color */
+  padding: 15px 32px; /* Padding for size */
+  text-align: center; /* Centered text */
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Make it inline-block */
+  font-size: 16px; /* Font size */
+  margin: 4px 2px; /* Margin for spacing */
+  cursor: pointer; /* Pointer cursor on hover */
+  border-radius: 12px; /* Rounded corners */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+}
+
+.button:hover {
+  background-color: $secondary-color-dark; /* Darker blue on hover */
+  transform: scale(1.05); /* Slight enlarge on hover */
+}
+
+.button-box{
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 0px;
+  button{
+    margin: 5px;
+  }
+}
