@@ -12,6 +12,8 @@ RUN touch shortner.log
 
 COPY Docker/oneContainer/start.sh .
 
+RUN sed -i 's/\r//' start.sh
+
 ENTRYPOINT [ "bash","start.sh" ]
 
 

@@ -18,8 +18,11 @@ export class AuthService {
       email,
       password,
     };
-    return this.http.post<any>(this.baseUrl + '/login', req).pipe((res) => {
-      res.subscribe((res) => (this.token = res.token));
+    return this.http.post<any>(this.baseUrl + '/api/user/login', req).pipe((res) => {
+      res.subscribe((res) => {
+        console.log(res)
+        this.token = res.token
+      });
       return res;
     });
   }

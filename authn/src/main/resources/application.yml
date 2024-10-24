@@ -9,6 +9,9 @@ spring:
     properties:
       hibernate:
         default_schema: linkshrink_sch
+
+  profiles:
+    active: DBh2
         
   devtools:
     add-properties: false

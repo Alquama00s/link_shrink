@@ -9,9 +9,10 @@ spring:
         default_schema: linkshrink_sch
   application:
     name: shortner
-  
   devtools:
     add-properties: false
+  profiles:
+    active: DBh2
 
 management:
   endpoints:
