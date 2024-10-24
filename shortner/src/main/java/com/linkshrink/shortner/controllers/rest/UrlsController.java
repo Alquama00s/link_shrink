@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.time.Duration;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/urls")
@@ -30,5 +32,10 @@ public class UrlsController extends ApiControllerAdvice{
     @GetMapping("/get")
     public Url get(@RequestParam(value = "short_url") String shortUrl) throws KnownException {
         return urlsService.getUrl(shortUrl);
+    }
+
+    @GetMapping("/")
+    public Map<String,Object> getAllUrls(){
+        return Map.of("urls",urlsService.getAllUrl());
     }
 }

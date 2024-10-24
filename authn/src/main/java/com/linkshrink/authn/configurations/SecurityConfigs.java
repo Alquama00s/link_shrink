@@ -21,6 +21,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,7 +43,7 @@ public class SecurityConfigs {
     public SecurityFilterChain defaultChain(HttpSecurity http,SimpleCorsConfigSource corsConfigurationSource) throws Exception {
         http.formLogin(AbstractHttpConfigurer::disable)
         .csrf(CsrfConfigurer::disable)
-        .sessionManagement(AbstractHttpConfigurer::disable)
+        .sessionManagement(smc -> smc.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .cors(cc->cc.configurationSource(corsConfigurationSource))
         .authorizeHttpRequests(r->r
                 .requestMatchers(

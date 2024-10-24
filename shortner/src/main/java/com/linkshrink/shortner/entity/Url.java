@@ -1,22 +1,28 @@
 package com.linkshrink.shortner.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.linkshrink.shortner.util.customValidators.ValidateShortUrl;
 import com.linkshrink.shortner.util.deserializer.TimestampIntervalDeserializer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.URL;
 
 import java.sql.Timestamp;
 
 
+@Data
 @Entity
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "urls")
 @ValidateShortUrl
-public class Url {
-
-
+public class Url extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,74 +30,19 @@ public class Url {
     private long id;
 
 
-    @Column(name = "long_url")
     @URL
+    @NotNull
     private String longUrl;
 
-    @Column(name = "short_url")
     private String shortUrl;
 
-    @Column(name = "generated")
     @NotNull
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private boolean generated = false;
-
-    @Column(name = "created_on")
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    private Timestamp creationTime;
 
 
     @Column(name = "expiry_after")
     @JsonDeserialize(using = TimestampIntervalDeserializer.class)
     private Timestamp expiryAfter;
 
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getLongUrl() {
-        return longUrl;
-    }
-
-    public void setLongUrl(String longUrl) {
-        this.longUrl = longUrl;
-    }
-
-    public String getShortUrl() {
-        return shortUrl;
-    }
-
-    public void setShortUrl(String shortUrl) {
-        this.shortUrl = shortUrl;
-    }
-
-    public boolean isGenerated() {
-        return generated;
-    }
-
-    public void setGenerated(boolean generated) {
-        this.generated = generated;
-    }
-    public Timestamp getCreationTime() {
-        return creationTime;
-    }
-
-    public void setCreationTime(Timestamp creationTime) {
-        this.creationTime = creationTime;
-    }
-
-    public Timestamp getExpiryAfter() {
-        return expiryAfter;
-    }
-
-    public void setExpiryAfter(Timestamp expiryAfter) {
-        this.expiryAfter = expiryAfter;
-    }
-
-    
 }

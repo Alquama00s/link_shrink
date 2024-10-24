@@ -52,6 +52,7 @@ public class PrivateUserDetails implements JwtSubject {
     public Map<String, Object> getSecurePayload() {
         return Map.of(
                 "user.username",user.getEmail(),
+                "user.name",user.getName(),
                 "user.id",user.getId()
         );
     }

@@ -29,11 +29,11 @@ public class User extends BaseEntity{
     @Id
     private int id;
 
-    @Email(groups = PersistRequestDTO.class)
+    @Email(groups = RequestDTO.class)
     private String email;
 
     @Size(min = 5,max = 100)
-    @NotBlank(groups = PersistRequestDTO.class )
+    @NotBlank
     private String name;
 
 
@@ -66,4 +66,7 @@ public class User extends BaseEntity{
         return RoleUtils.getSimpleRoles(roles);
     }
 
+    public void setName(String name) {
+        this.name = name.trim();
+    }
 }

@@ -85,6 +85,8 @@ public class JwtTokenService {
         JWEHeader jweHeader =  new JWEHeader.Builder(JWEAlgorithm.RSA_OAEP_256,EncryptionMethod.A256GCM)
                 .keyID(jwk.getKeyID())
                 .contentType("JWT")
+                .audience(List.of("LinkShrink"))
+                .customParam("exp",claimsSet.getExpirationTime().toInstant().getEpochSecond())
                 .build();
 
         JWEObject jweObject = new JWEObject(jweHeader, payload);
