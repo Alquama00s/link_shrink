@@ -93,3 +93,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   width: 100%;
   height: 100%;
 }
+
+
+.snack-bar-red{
+  --mdc-snackbar-container-color: red;
+}
+
+.snack-bar-green{
+  --mdc-snackbar-container-color: green;
+}

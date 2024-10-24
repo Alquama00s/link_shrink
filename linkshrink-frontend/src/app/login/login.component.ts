@@ -20,11 +20,9 @@ export class LoginComponent {
   password=""
 
   login(){
-    this.authService.login(this.email,this.password)
-    .subscribe(res=>console.info(res))
-
-    this.router.navigate(['web'])
-
+    this.authService
+      .login(this.email, this.password)
+      .subscribe((res) => this.router.navigate(['web']));
   }
 
 

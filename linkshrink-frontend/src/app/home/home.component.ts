@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { UrlService } from '../services/url.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-home',
@@ -28,7 +29,7 @@ import { UrlService } from '../services/url.service';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
-  constructor(private urlservice: UrlService) {}
+  constructor(private urlservice: UrlService, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.urlservice.getUrls().subscribe((res) => (this.rowData = res));
@@ -49,9 +50,30 @@ export class HomeComponent implements OnInit {
   }
 
   addUrl() {
-    console.log(this.shortUrl);
-    console.log(this.longUrl);
+    this.urlservice
+      .createUrl({
+        longUrl: this.longUrl,
+        shortUrl: this.shortUrl,
+      })
+      .subscribe({
+        error: (err) =>
+          this.snackBar.open('error creating url', undefined, {
+            duration: 1500,
+            panelClass: ['snack-bar-red'],
+          }),
+        complete: () => this.resetForm(),
+      });
+
     this.closeForm();
+  }
+
+  resetForm() {
+    this.snackBar.open('successfully created url', undefined, {
+      duration: 1500,
+      panelClass: ['snack-bar-green'],
+    }),
+      (this.longUrl = '');
+    this.shortUrl = '';
   }
 
   rowData: Array<any> = [];
