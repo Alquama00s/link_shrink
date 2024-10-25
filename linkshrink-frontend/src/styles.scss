@@ -59,6 +59,30 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   transform: scale(1.05); /* Slight enlarge on hover */
 }
 
+.icon-button{
+  width: 30px;
+  height: 30px;
+  overflow: hidden;
+  border: none;
+  background-color: $secondary-color; /* Background color */
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  mat-icon{
+    font-size: 20px;
+    color: white;
+  }
+  div{
+    position: absolute;
+    left: 3px;
+    text-align: center;
+    width: 20px;
+    height: 20px;
+  }
+}
+
 .button-box{
   display: flex;
   justify-content: flex-end;

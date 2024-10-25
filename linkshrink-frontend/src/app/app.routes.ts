@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { inject } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { SignupComponent } from './signup/signup.component';
+import { ProfileComponent } from './profile/profile.component';
 
 export const routes: Routes = [
   { path: 'web/login', component: LoginComponent },
@@ -15,6 +16,10 @@ export const routes: Routes = [
       {
         path: '',
         component: HomeComponent,
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
       },
     ],
   },

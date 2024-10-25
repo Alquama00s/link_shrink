@@ -37,3 +37,12 @@
   height: 100%;
 }
 
+button[mat-icon-button] {
+  background-color: transparent; /* Or any color that fits your theme */
+  color: inherit; /* Inherit color to match the theme */
+  border: none;
+}
+
+mat-icon {
+  color: inherit; /* Inherit color to match the theme */
+}

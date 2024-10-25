@@ -70,9 +70,9 @@ export class HomeComponent implements OnInit {
   }
 
   resetForm(val: any) {
-    let nData = structuredClone(this.rowData)
+    let nData = structuredClone(this.rowData);
     nData.push(val);
-    this.rowData=nData;
+    this.rowData = nData;
     this.snackBar.open('successfully created url', undefined, {
       duration: 1500,
       panelClass: ['snack-bar-green'],
@@ -83,10 +83,10 @@ export class HomeComponent implements OnInit {
 
   // Column Definitions: Defines the columns to be displayed.
   colDefs: ColDef[] = [
-    { field: 'id' },
-    { field: 'longUrl' },
+    { field: 'id', maxWidth: 100 },
+    { field: 'longUrl', minWidth: 800 },
     { field: 'shortUrl' },
-    { field: 'expiryAfter' },
+    { field: 'expiryAfter', minWidth: 300 },
     {
       field: 'actions',
       cellRenderer: ButtonComponent,

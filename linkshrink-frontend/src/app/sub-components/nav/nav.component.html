@@ -1,11 +1,6 @@
 <div id="main-nav">
-  <div id="logo">
-    LinkShrink
-  </div>
-  <div *ngIf="profile">
-    {{profile?.name}}
-  </div>
-  <div id="profile">
-      <img src="https://picsum.photos/200" alt="profile">
+  <div id="logo">LinkShrink</div>
+  <div id="profile" (click)="profile()">
+    <img src="https://picsum.photos/200" alt="profile" />
   </div>
 </div>
