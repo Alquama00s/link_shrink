@@ -16,7 +16,9 @@ export class UrlService extends BaseService{
   private apiUrl = 'https://jsonplaceholder.typicode.com/posts';
 
   getUrls():Observable<any> {
-    return this.http.get(this.apiUrl);
+    return this.http.get(this.baseUrl + '/api/urls/',{
+      headers: this.getheaders()
+    });
 
   }
 

@@ -3,12 +3,14 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { inject } from '@angular/core';
 import { AuthService } from './services/auth.service';
+import { SignupComponent } from './signup/signup.component';
 
 export const routes: Routes = [
   { path: 'web/login', component: LoginComponent },
+  { path: 'web/signup', component: SignupComponent },
   {
     path: 'web',
-    canActivate:[()=>inject(AuthService).isLoggedIn()],
+    canActivate: [() => inject(AuthService).isLoggedIn()],
     children: [
       {
         path: '',

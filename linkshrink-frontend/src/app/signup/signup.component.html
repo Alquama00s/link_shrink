@@ -1,0 +1,30 @@
+<div class="background">
+  <div class="popup-form">
+    <form>
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput [(ngModel)]="name" name="password" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="email" name="email" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput [(ngModel)]="password" name="password" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Re enter password</mat-label>
+        <input matInput [(ngModel)]="reEnterPassword" name="reEnterPassword" />
+      </mat-form-field>
+
+      <button mat-flat-button color="primary" (click)="signUp()">
+        Sign Up
+      </button>
+      <button mat-flat-button color="primary" (click)="login()">Login</button>
+    </form>
+  </div>
+</div>

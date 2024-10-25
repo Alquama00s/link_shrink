@@ -31,8 +31,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class HomeComponent implements OnInit {
   constructor(private urlservice: UrlService, private snackBar: MatSnackBar) {}
 
+  rowData: Array<any> = [];
+
   ngOnInit(): void {
-    this.urlservice.getUrls().subscribe((res) => (this.rowData = res));
+    this.urlservice.getUrls().subscribe((res) => (this.rowData = res.urls));
   }
   showForm = false;
   longUrl = '';
@@ -56,18 +58,21 @@ export class HomeComponent implements OnInit {
         shortUrl: this.shortUrl,
       })
       .subscribe({
+        next: (val) => this.resetForm(val),
         error: (err) =>
           this.snackBar.open('error creating url', undefined, {
             duration: 1500,
             panelClass: ['snack-bar-red'],
           }),
-        complete: () => this.resetForm(),
       });
 
     this.closeForm();
   }
 
-  resetForm() {
+  resetForm(val: any) {
+    let nData = structuredClone(this.rowData)
+    nData.push(val);
+    this.rowData=nData;
     this.snackBar.open('successfully created url', undefined, {
       duration: 1500,
       panelClass: ['snack-bar-green'],
@@ -76,14 +81,12 @@ export class HomeComponent implements OnInit {
     this.shortUrl = '';
   }
 
-  rowData: Array<any> = [];
-
   // Column Definitions: Defines the columns to be displayed.
   colDefs: ColDef[] = [
     { field: 'id' },
-    { field: 'title' },
-    { field: 'body' },
-    { field: 'userId' },
+    { field: 'longUrl' },
+    { field: 'shortUrl' },
+    { field: 'expiryAfter' },
     {
       field: 'actions',
       cellRenderer: ButtonComponent,

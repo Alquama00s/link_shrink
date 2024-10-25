@@ -14,18 +14,22 @@ import { Router } from '@angular/router';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  constructor(private authService: AuthService,private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
-  email=""
-  password=""
+  email = '';
+  password = '';
 
-  login(){
+  login() {
     this.authService
       .login(this.email, this.password)
-      .subscribe((res) => this.router.navigate(['web']));
+      .subscribe((res) => this.onLoginSuccess());
   }
 
+  onLoginSuccess() {
+    this.router.navigate(['web']);
+  }
 
-
-
+  signUp() {
+    this.router.navigate(['web', 'signup']);
+  }
 }
