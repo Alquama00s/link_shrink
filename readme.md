@@ -14,7 +14,12 @@ LinkShrink is a simple and efficient URL shortening service that allows you to s
 - [License](./LICENSE)
 
 ## Getting Started
-
+### Docker 
+```bash
+docker run -p 80:80 -p 8080-8082:8080-8082 alquanma00s/linkshrink
+```
+- head over to http://localhost
+- for visiting short urls http://localhost:8081/{short url}
 ### Installation
 
 [//]: # (LinkShrink can be used both through our web platform or via an API. To use the web platform, simply visit [linkshrink.com]&#40;https://www.linkshrink.com&#41; and follow the on-screen instructions to shorten your URLs.)
@@ -30,8 +35,6 @@ LinkShrink is a simple and efficient URL shortening service that allows you to s
 [//]: # (3. Use the API key to authenticate your requests when using LinkShrink API.)
 
 The backend is being written on spring boot and can be started by ```mvn spring-boot:run```
-
-### Usage
 
 [//]: # (#### Web Platform)
 
