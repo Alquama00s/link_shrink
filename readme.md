@@ -19,7 +19,7 @@ LinkShrink is a simple and efficient URL shortening service that allows you to s
 docker run -p 80:80 -p 8080-8082:8080-8082 alquama00s/linkshrink
 ```
 - head over to http://localhost
-- for visiting short urls http://localhost:8081/{short url}
+- for visiting short urls http://localhost:8081/{short-url}
 ### Installation
 
 [//]: # (LinkShrink can be used both through our web platform or via an API. To use the web platform, simply visit [linkshrink.com]&#40;https://www.linkshrink.com&#41; and follow the on-screen instructions to shorten your URLs.)
