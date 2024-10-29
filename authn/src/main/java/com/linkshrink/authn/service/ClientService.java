@@ -13,6 +13,7 @@ import com.linkshrink.authn.repository.ClientRepository;
 import com.linkshrink.authn.repository.RoleRepository;
 import com.linkshrink.authn.repository.UserRepository;
 import com.nimbusds.jose.JOSEException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ import java.util.UUID;
 
 @Slf4j
 @Service
+@Transactional
 @AllArgsConstructor
 public class ClientService {
 
@@ -56,6 +58,11 @@ public class ClientService {
        clientRepository.save(client);
 
         return clientDTO;
+    }
+
+    public Client registerClient(Client client){
+        client.setClientSecret(passwordEncoder.encode(client.getClientSecret()));
+        return clientRepository.save(client);
     }
 
     public List<Client> getAllClients(){

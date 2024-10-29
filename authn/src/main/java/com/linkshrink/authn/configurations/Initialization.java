@@ -8,9 +8,12 @@ import com.linkshrink.authn.repository.ClientRepository;
 import com.linkshrink.authn.repository.RoleRepository;
 import com.linkshrink.authn.repository.UserRepository;
 import com.linkshrink.authn.service.ClientService;
+import com.linkshrink.authn.service.RoleService;
 import com.linkshrink.authn.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,30 +24,50 @@ import java.util.UUID;
 
 
 @Component
-@AllArgsConstructor
 @Slf4j
 public class Initialization implements CommandLineRunner {
+
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
     private ClientRepository clientRepository;
+    @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private RoleService roleService;
+    @Autowired
+    private ClientService clientService;
 
     @Value("${init.admin.email:admin@linkshrink.com}")
-    private final String ADMIN_EMAIL;
+    private String ADMIN_EMAIL;
 
     @Value("${init.admin.name:admin}")
-    private final String ADMIN_NAME;
+    private String ADMIN_NAME;
 
     @Value("${init.admin.password:admin}")
-    private final String ADMIN_PASSWORD;
+    private String ADMIN_PASSWORD;
 
     @Value("${init.clients:'redirector:redirectorpassword'}")
-    private final String CLIENTS;
+    private String CLIENTS;
 
     @Override
     public void run(String... args) throws Exception {
-
+        initRoles();
+        createAdmin();
+        createAdminClients();
     }
+    private void initRoles(){
+        roleService.createRoles(
+                "USER",
+                "ADMIN",
+                "CLIENT"
+        );
+    }
+
 
     private void createAdmin(){
         if(userRepository.findByEmail(ADMIN_EMAIL).isEmpty()){
@@ -58,16 +81,7 @@ public class Initialization implements CommandLineRunner {
             }else{
                 admin.setPassword(ADMIN_PASSWORD);
             }
-            admin.setPwd(passwordEncoder.encode(admin.getPassword()));
-            var adminRole = roleRepository.findByName("ROLE_ADMIN");
-            if(adminRole.isEmpty()){
-                var role = new Role();
-                role.setName("ROLE_ADMIN");
-                adminRole = java.util.Optional.of(roleRepository.save(role));
-            }
-            admin.setRoles(List.of(adminRole.orElseThrow()));
-            admin.setActive(true);
-            userRepository.save(admin);
+            userService.registerAdmin(admin);
         }
     }
 
@@ -79,7 +93,7 @@ public class Initialization implements CommandLineRunner {
         for(var c : clients){
             var clientIdPassword = c.split(":");
             var user = userRepository.findByEmail(ADMIN_EMAIL).orElseThrow();
-            var cliRole = roleRepository.findById(3).orElseThrow();
+            var cliRole = roleRepository.findByName("ROLE_CLIENT").orElseThrow();
             var client = new Client();
             client.setClientId(clientIdPassword[0]);
             client.setClientSecret(clientIdPassword[1]);
@@ -89,7 +103,7 @@ public class Initialization implements CommandLineRunner {
             client.setRefreshTokenValiditySec(5*60);
             client.setActive(true);
             client.setClientSecret(passwordEncoder.encode(client.getClientSecret()));
-            clientRepository.save(client);
+            clientService.registerClient(client);
         }
     }
 

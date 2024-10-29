@@ -2,6 +2,7 @@ package com.linkshrink.authn.service;
 
 import com.linkshrink.authn.entity.Role;
 import com.linkshrink.authn.repository.RoleRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import java.util.stream.StreamSupport;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class RoleService {
 
     RoleRepository roleRepository;
@@ -32,6 +34,18 @@ public class RoleService {
         roleOb.setName(authority);
         return roleRepository.save(roleOb);
     }
+
+    public void createRoles(String ...roles){
+        for(var r: roles){
+            createRole(r);
+        }
+    }
+    public void createAuthority(String ...authorities){
+        for(var r: authorities){
+            createAuthority(r);
+        }
+    }
+
 
 
 }

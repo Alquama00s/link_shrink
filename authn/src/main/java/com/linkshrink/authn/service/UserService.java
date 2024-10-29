@@ -10,6 +10,7 @@ import com.linkshrink.authn.exceptions.GenericKnownException;
 import com.linkshrink.authn.repository.RoleRepository;
 import com.linkshrink.authn.repository.UserRepository;
 import com.nimbusds.jose.JOSEException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @Slf4j
 @Service
+@Transactional
 @AllArgsConstructor
 public class UserService {
 
@@ -35,6 +37,22 @@ public class UserService {
         if(existingUser.isPresent()) throw new GenericKnownException("Email already exist");
         user.setPwd(passwordEncoder.encode(user.getPassword()));
         var defaultRole = roleRepository.findByName("ROLE_USER");
+        if(defaultRole.isEmpty()){
+            var role = new Role();
+            role.setName("ROLE_USER");
+            defaultRole = java.util.Optional.of(roleRepository.save(role));
+        }
+        user.setRoles(List.of(defaultRole.orElseThrow()));
+        user.setActive(true);
+        return userRepository.save(user);
+    }
+
+
+    public User registerAdmin(User user){
+        var existingUser = userRepository.findByEmail(user.getEmail());
+        if(existingUser.isPresent()) throw new GenericKnownException("Email already exist");
+        user.setPwd(passwordEncoder.encode(user.getPassword()));
+        var defaultRole = roleRepository.findByName("ROLE_ADMIN");
         if(defaultRole.isEmpty()){
             var role = new Role();
             role.setName("ROLE_USER");
