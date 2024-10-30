@@ -92,18 +92,8 @@ public class Initialization implements CommandLineRunner {
         var clients = CLIENTS.split(",");
         for(var c : clients){
             var clientIdPassword = c.split(":");
-            var user = userRepository.findByEmail(ADMIN_EMAIL).orElseThrow();
-            var cliRole = roleRepository.findByName("ROLE_CLIENT").orElseThrow();
-            var client = new Client();
-            client.setClientId(clientIdPassword[0]);
-            client.setClientSecret(clientIdPassword[1]);
-            client.setUserId(user.getId());
-            client.setRoles(List.of(cliRole));
-            client.setAccessTokenValiditySec(5*60);
-            client.setRefreshTokenValiditySec(5*60);
-            client.setActive(true);
-            client.setClientSecret(passwordEncoder.encode(client.getClientSecret()));
-            clientService.registerClient(client);
+            var clientDto = new ClientDTO(clientIdPassword[0],clientIdPassword[1]);
+            clientService.registerAdminClient(clientDto);
         }
     }
 

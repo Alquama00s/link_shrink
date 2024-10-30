@@ -16,6 +16,8 @@ import com.nimbusds.jose.JOSEException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,16 +30,23 @@ import java.util.UUID;
 @Slf4j
 @Service
 @Transactional
-@AllArgsConstructor
 public class ClientService {
 
+    @Autowired
     ClientRepository clientRepository;
+    @Autowired
     UserRepository userRepository;
+    @Autowired
     RoleRepository roleRepository;
+    @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
     AuthenticationManager authenticationManager;
+    @Autowired
     JwtTokenService jwtTokenService;
 
+    @Value("${init.admin.email:admin@linkshrink.com}")
+    private String ADMIN_EMAIL;
 
     public ClientDTO generateClient() {
         var user = extractLoggedInUser();
@@ -60,9 +69,25 @@ public class ClientService {
         return clientDTO;
     }
 
-    public Client registerClient(Client client){
+    public ClientDTO registerAdminClient(ClientDTO clientDto){
+        var user = userRepository.findByEmail(ADMIN_EMAIL).orElseThrow();
+        var cliRole = roleRepository.findById(3).orElseThrow();
+
+        var client = new Client();
+        client.setClientId(clientDto.getClientId());
+        client.setClientSecret(clientDto.getClientSecret());
+        client.setUserId(user.getId());
+        client.setRoles(List.of(cliRole));
+        client.setAccessTokenValiditySec(5*60);
+        client.setRefreshTokenValiditySec(5*60);
+        client.setActive(true);
+
+        var clientDTO = new ClientDTO(client.getClientId(), client.getClientSecret());
+
         client.setClientSecret(passwordEncoder.encode(client.getClientSecret()));
-        return clientRepository.save(client);
+        clientRepository.save(client);
+
+        return clientDTO;
     }
 
     public List<Client> getAllClients(){
