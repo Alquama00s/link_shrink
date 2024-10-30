@@ -13,7 +13,6 @@ public class UsernamePassword {
 
     @Email
     private String email;
-    @Size(min = 5, max = 20)
     @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
