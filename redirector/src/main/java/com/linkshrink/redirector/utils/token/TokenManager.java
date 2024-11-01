@@ -13,7 +13,7 @@ public class TokenManager {
 
     private Token token;
 
-    private Instant expiry;
+    private Instant expiry=new Timestamp(System.currentTimeMillis()).toInstant();
 
     @Setter
     private ClientCredentials clientCredentials;
@@ -22,13 +22,13 @@ public class TokenManager {
     @Setter
     private JWTAuthenticator jwtAuthenticator;
 
-    public Token getToken() {
+    public String getToken() {
         if (expiry.isAfter(new Timestamp(System.currentTimeMillis()).toInstant())) {
-            return token;
+            return token.getToken();
         }
         token = jwtAuthenticator.authenticate(clientCredentials);
         expiry = new Timestamp(System.currentTimeMillis()).toInstant().plus(expiryDuration);
-        return token;
+        return token.getToken();
     }
 
 }

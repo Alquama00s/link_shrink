@@ -11,8 +11,6 @@ spring:
     name: shortner
   devtools:
     add-properties: false
-  profiles:
-    active: DBh2
 
 management:
   endpoints:

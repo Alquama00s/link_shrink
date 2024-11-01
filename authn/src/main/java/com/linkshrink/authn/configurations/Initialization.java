@@ -19,6 +19,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,7 +52,7 @@ public class Initialization implements CommandLineRunner {
     @Value("${init.admin.password:admin}")
     private String ADMIN_PASSWORD;
 
-    @Value("${init.clients:'redirector:redirectorpassword'}")
+    @Value("${init.clients:redirector:redirectorpassword}")
     private String CLIENTS;
 
     @Override
@@ -92,6 +93,7 @@ public class Initialization implements CommandLineRunner {
         var clients = CLIENTS.split(",");
         for(var c : clients){
             var clientIdPassword = c.split(":");
+            System.out.println(Arrays.toString(clientIdPassword));
             var clientDto = new ClientDTO(clientIdPassword[0],clientIdPassword[1]);
             clientService.registerAdminClient(clientDto);
         }

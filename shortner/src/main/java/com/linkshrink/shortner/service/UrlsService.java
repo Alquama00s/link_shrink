@@ -28,7 +28,7 @@ public class UrlsService {
 
     public Url getUrl(String shortUrl) throws KnownException {
         var res = urlDao.getUrl(shortUrl);
-        if(res.getExpiryAfter().after(new Timestamp(System.currentTimeMillis()))){
+        if(res.getExpiryAfter().before(new Timestamp(System.currentTimeMillis()))){
             urlDao.delete(res.getId());
             throw new KnownException("Url expired");
         }
