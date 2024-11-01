@@ -1,8 +1,13 @@
 package com.linkshrink.redirector.configurations;
 
+import com.linkshrink.redirector.client.AuthnClient;
 import com.linkshrink.redirector.redis.Client;
+import com.linkshrink.redirector.utils.token.TokenManager;
+import com.linkshrink.redirector.utils.token.TokenManagerBuilder;
 import io.lettuce.core.RedisURI;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,6 +29,19 @@ public class Configs {
             builder.withPassword(redisConfig.password().toCharArray());
         }
         return Client.build(builder.build());
+    }
+
+    @Bean
+    public TokenManager tokenManager(AuthnClient authnClient){
+        String authClientId = System.getProperty("REDIRECTOR_AUTH_CLIENTID","redirector");
+        String authClientSecret = System.getProperty("REDIRECTOR_AUTH_CLIENTSECRET","redirectorpassword");
+        return new TokenManagerBuilder()
+                .clientId(authClientId)
+                .clientSecret(authClientSecret)
+                .expiryDuration(Duration.ofMinutes(3))
+                .jwtAuthenticator(authnClient)
+                .build();
+
     }
 
 }

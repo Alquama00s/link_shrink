@@ -2,6 +2,7 @@ package com.linkshrink.redirector.controller;
 
 import com.linkshrink.redirector.configurations.FallbackConfig;
 import com.linkshrink.redirector.service.UrlService;
+import com.linkshrink.redirector.utils.token.TokenManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -17,6 +18,9 @@ public class Redirector {
 
     @Autowired
     UrlService urlService;
+
+    @Autowired
+    TokenManager tokenManager;
 
     @Autowired
     FallbackConfig fallbackConfig;
