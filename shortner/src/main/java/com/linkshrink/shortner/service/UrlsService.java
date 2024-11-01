@@ -28,28 +28,28 @@ public class UrlsService {
 
     public Url getUrl(String shortUrl) throws KnownException {
         var res = urlDao.getUrl(shortUrl);
-        if(res.getExpiryAfter().before(new Timestamp(System.currentTimeMillis()))){
+        if (res.getExpiryAfter() != null && res.getExpiryAfter().before(new Timestamp(System.currentTimeMillis()))) {
             urlDao.delete(res.getId());
             throw new KnownException("Url expired");
         }
         return res;
     }
 
-    public List<Url> getAllUrl(){
+    public List<Url> getAllUrl() {
         var user = userService.getLoggedInUser();
         return urlRepository.findByCreatedBy(user.getId());
     }
 
     public Url createUrl(Url url) throws Exception {
-        if(url.getShortUrl()!=null&&urlDao.urlExist(url.getShortUrl())){
+        if (url.getShortUrl() != null && urlDao.urlExist(url.getShortUrl())) {
 
             throw new KnownException("Url already exist");
         }
 
-        if(url.getShortUrl()==null){
+        if (url.getShortUrl() == null) {
             //generating random urls if collision occurs db wil throw error
             url.setShortUrl(urlGenerator.generateShortUrl());
-            var expAfter=Timestamp
+            var expAfter = Timestamp
                     .from(new Timestamp(System.currentTimeMillis())
                             .toInstant()
                             .plus(Duration.parse(fallBacks.expiryDuration())));

@@ -12,3 +12,5 @@ spring:
         hbm2ddl:
           auto: update
         default_schema: null
+  hikari:
+    maximum-pool-size: 1
