@@ -20,22 +20,6 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
-        env:
-        - name: SPRING_DATASOURCE_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: postgres-user
-        - name: SPRING_DATASOURCE_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: postgres-password
-        - name: DB_URL
-          valueFrom:
-            configMapKeyRef:
-              name: postgres-config
-              key: postgres-url
 ---
 apiVersion: v1
 kind: Service
