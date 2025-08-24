@@ -19,7 +19,7 @@ create table linkshrink_sch.users(
 
 create table linkshrink_sch.clients(
 	id serial primary key,
-	client_id varchar(100) unique,
+	client_id varchar(100),
 	client_secret varchar(200),
 	user_id int references linkshrink_sch.users(id),
 	access_token_validity_sec int,
