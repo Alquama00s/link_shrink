@@ -1,6 +1,6 @@
 set -eux
-minikube cache add alquama00s/linkshrink/db
-minikube cache add alquama00s/linkshrink/frontend
-minikube cache add alquama00s/linkshrink/shortner
-minikube cache add alquama00s/linkshrink/redirector
-minikube cache add alquama00s/linkshrink/authn
+minikube image load alquama00s/linkshrink/db
+minikube image load alquama00s/linkshrink/frontend
+minikube image load alquama00s/linkshrink/shortner
+minikube image load alquama00s/linkshrink/redirector
+minikube image load alquama00s/linkshrink/authn
