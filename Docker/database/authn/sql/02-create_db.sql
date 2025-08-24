@@ -7,7 +7,7 @@ drop table if exists linkshrink_sch.roles;
 
 create table linkshrink_sch.users(
 	id serial primary key,
-	email varchar(100),
+	email varchar(100) unique,
 	name varchar(100),
 	pwd varchar(200),
 	is_active boolean not null default false,
@@ -19,7 +19,7 @@ create table linkshrink_sch.users(
 
 create table linkshrink_sch.clients(
 	id serial primary key,
-	client_id varchar(100),
+	client_id varchar(100) unique,
 	client_secret varchar(200),
 	user_id int references linkshrink_sch.users(id),
 	access_token_validity_sec int,
