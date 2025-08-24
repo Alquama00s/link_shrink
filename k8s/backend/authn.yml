@@ -44,12 +44,13 @@ kind: Service
 metadata:
   name: authn-service
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: authn
   ports:
     - protocol: TCP
       port: 8080
       targetPort: 8080
+      nodePort: 30200
 
 

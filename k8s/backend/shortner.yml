@@ -44,11 +44,12 @@ kind: Service
 metadata:
   name: shortner-service
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: shortner
   ports:
     - protocol: TCP
       port: 8080
       targetPort: 8080
+      nodePort: 30400
 

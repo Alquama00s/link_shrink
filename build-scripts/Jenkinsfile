@@ -32,12 +32,11 @@ pipeline{
                         sh "bash build-scripts/loadImages.sh"
                     }
                 }
-        // stage('Deploy'){
-        //     steps{
-        //         echo 'Deploying....'
-        //         sh "cp target/app.jar /App/"
-        //         sh "sudo systemctl restart MavenApp"
-        //     }
-        // }
+        stage('Deploy'){
+            steps{
+                echo 'Deploying....'
+                sh "cd k8s && bash app.sh"
+            }
+        }
     }
 }
