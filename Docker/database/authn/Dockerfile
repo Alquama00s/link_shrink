@@ -6,7 +6,7 @@ ENV POSTGRES_PASSWORD=pass_876
 ENV POSTGRES_DB=linkshrink
 
 # Copy SQL scripts to the initialization directory
-COPY Docker/database/sql/ /docker-entrypoint-initdb.d/
+COPY Docker/database/authn/sql/ /docker-entrypoint-initdb.d/
 
 # Expose the default PostgreSQL port
 EXPOSE 5432
