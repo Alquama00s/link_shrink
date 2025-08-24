@@ -15,7 +15,7 @@ public class DefaultUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var user = userRepository.findByEmail(username).stream().findFirst().orElseThrow(()->
+        var user = userRepository.findByEmail(username).orElseThrow(()->
                 new UsernameNotFoundException("User not found")
         );
         return new PrivateUserDetails(user);
