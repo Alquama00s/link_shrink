@@ -1,3 +1,4 @@
+set -eux
 microService=("authn" "shortner" "redirector")
 
 for ms in "${microService[@]}"
@@ -9,3 +10,4 @@ gradle bootJar
 cd ..
 done
 
+cd linkshrink-frontend && npm run build
