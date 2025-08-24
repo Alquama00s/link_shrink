@@ -41,7 +41,7 @@ public class JwtVerifier {
     @Value("${auth.server:http://localhost:8082}")
     String authServerRoot;
 
-    @Scheduled(fixedDelay = 5, timeUnit = TimeUnit.MINUTES)
+    @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.MINUTES)
     void init() {
         webClient.get()
                 .uri(authServerRoot + "/oauth/protected/jwks")
