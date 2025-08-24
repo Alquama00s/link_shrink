@@ -22,6 +22,9 @@ spec:
       - name: redirector-postgres
         image: alquama00s/linkshrink/redirectordb
         imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: redirector-pv-volume
+          mountPath: /var/lib/postgresql/data
         ports:
         - containerPort: 5432
         env:
@@ -35,3 +38,16 @@ spec:
             secretKeyRef:
               name: postgres-secret
               key: postgres-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redirector-postgres-service
+spec:
+  type: ClusterIP
+  selector:
+    app: redirector-postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432

@@ -4,4 +4,4 @@ metadata:
   name: postgres-config
 data:
   authn-postgres-url: jdbc:postgresql://authn-postgres-service:5432/linkshrink?currentSchema=linkshrink_sch
-  redirector-postgres-url: jdbc:postgresql://redirector-postgres-service:5432/linkshrink
+  redirector-postgres-url: jdbc:postgresql://redirector-postgres-service:5432/linkshrink?currentSchema=linkshrink_sch

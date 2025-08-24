@@ -21,6 +21,8 @@ spec:
         ports:
         - containerPort: 8080
         env:
+        - name: SERVER_PORT
+          value: 8080
         - name: SPRING_DATASOURCE_USERNAME
           valueFrom:
             secretKeyRef:
@@ -36,5 +38,17 @@ spec:
             configMapKeyRef:
               name: postgres-config
               key: redirector-postgres-url
-
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redirector-service
+spec:
+  type: ClusterIP
+  selector:
+    app: redirector
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
 

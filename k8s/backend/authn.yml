@@ -21,6 +21,8 @@ spec:
         ports:
         - containerPort: 8080
         env:
+        - name: SERVER_PORT
+          value: 8080
         - name: SPRING_DATASOURCE_USERNAME
           valueFrom:
             secretKeyRef:
@@ -36,5 +38,18 @@ spec:
             configMapKeyRef:
               name: postgres-config
               key: authn-postgres-url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: authn-service
+spec:
+  type: ClusterIP
+  selector:
+    app: authn
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
 
 

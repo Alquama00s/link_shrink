@@ -13,7 +13,7 @@ export class UrlService extends BaseService {
   }
 
   private token = null;
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = 'http://shortner-service:8080';
   private apiUrl = 'https://jsonplaceholder.typicode.com/posts';
 
   getUrls(): Observable<any> {

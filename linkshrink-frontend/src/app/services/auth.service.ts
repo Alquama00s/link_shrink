@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, map, Observable, of } from 'rxjs';
@@ -24,8 +24,8 @@ export class AuthService extends BaseService {
 
   private token: BehaviorSubject<string> = new BehaviorSubject('');
   private savedProfile: any | null = null;
-  private authnUrl = 'http://localhost:8082';
-  private shortnerUrl = 'http://localhost:8080';
+  private authnUrl = 'http://authn-service:8080';
+  private shortnerUrl = 'http://shortner-service:8080';
 
   private apiUrl = 'https://jsonplaceholder.typicode.com/posts';
 
