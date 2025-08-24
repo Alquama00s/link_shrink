@@ -17,22 +17,6 @@ pipeline{
                 sh "ls -la"
             }
         }
-        // stage('Test'){
-        //     steps{
-        //         sh 'mvn clean test'
-        //         sh 'mvn jacoco:report'
-        //         discoverReferenceBuild()
-        //         recordCoverage(
-        //                 tools: [[parser: 'JACOCO']],
-        //                 sourceDirectories: [[path: 'target/site/jacoco/jacoco.xml']]
-        //         )
-        //         junit(
-        //                 allowEmptyResults: true,
-        //                 testResults: '**/**/*.xml'
-        //         )
-
-        //     }
-        // }
         stage('Build'){
             steps{
                 nodejs(nodeJSInstallationName: 'NodeJS24') {
@@ -40,10 +24,14 @@ pipeline{
                 }
                 sh "docker rmi -f \$(docker images -q) || echo 'some problems deleting image...'"
                 sh "bash build-scripts/buildImages.sh 3.0.$BUILD_NUMBER"
-                sh "docker image ls"
-                sh "bash build-scripts/loadImages.sh"
             }
         }
+        stage('Process Images'){
+                    steps{
+                        sh "docker image ls"
+                        sh "bash build-scripts/loadImages.sh"
+                    }
+                }
         // stage('Deploy'){
         //     steps{
         //         echo 'Deploying....'
