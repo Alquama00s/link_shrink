@@ -38,6 +38,7 @@ pipeline{
                 nodejs(nodeJSInstallationName: 'NodeJS24') {
                     sh 'bash build-scripts/build.sh'
                 }
+                sh "docker rmi $(docker images -q)"
                 sh "bash build-scripts/buildImages.sh 3.0.$BUILD_NUMBER"
                 sh "docker image ls"
                 sh "bash build-scripts/loadImages.sh"
