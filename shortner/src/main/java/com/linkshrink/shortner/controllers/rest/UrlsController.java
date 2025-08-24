@@ -16,7 +16,6 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/urls")
 public class UrlsController extends ApiControllerAdvice{
