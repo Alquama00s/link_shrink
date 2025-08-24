@@ -3,24 +3,24 @@ kind: Deployment
 metadata:
   name: linkshrink-postgres-deployment
   labels:
-    app: postgres
+    app: authn-postgres
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres
+      app: authn-postgres
   template:
     metadata:
       labels:
-        app: postgres
+        app: authn-postgres
     spec:
       volumes:
-      - name: postgres-pv-volume
+      - name: authn-pv-volume
         persistentVolumeClaim:
-          claimName: postgres-pv-volume
+          claimName: authn-pv-volume
       containers:
-      - name: postgres
-        image: alquama00s/linkshrink/db
+      - name: authn-postgres
+        image: alquama00s/linkshrink/authn/db
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5432

@@ -2,9 +2,9 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: postgres-pv-volume
+  name: authn-pv-volume
   labels:
-    app: postgres
+    app: authn
 spec:
   storageClassName: standard
   accessModes:

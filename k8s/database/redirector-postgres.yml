@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linkshrink-postgres-deployment
+  labels:
+    app: redirector-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redirector-postgres
+  template:
+    metadata:
+      labels:
+        app: redirector-postgres
+    spec:
+      volumes:
+      - name: redirector-pv-volume
+        persistentVolumeClaim:
+          claimName: redirector-pv-volume
+      containers:
+      - name: redirector-postgres
+        image: alquama00s/linkshrink/redirector/db
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-password

@@ -3,4 +3,5 @@ kind: ConfigMap
 metadata:
   name: postgres-config
 data:
-  postgres-url: jdbc:postgresql://postgres-service/linkshrink
+  authn-postgres-url: jdbc:postgresql://authn-postgres-service:5432/linkshrink
+  redirector-postgres-url: jdbc:postgresql://redirector-postgres-service:5432/linkshrink
