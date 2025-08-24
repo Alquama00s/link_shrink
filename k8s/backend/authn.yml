@@ -22,7 +22,7 @@ spec:
         - containerPort: 8080
         env:
         - name: SERVER_PORT
-          value: 8080
+          value: "8080"
         - name: SPRING_DATASOURCE_USERNAME
           valueFrom:
             secretKeyRef:
