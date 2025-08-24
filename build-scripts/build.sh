@@ -12,4 +12,4 @@ gradle bootJar
 cd ..
 done
 
-cd linkshrink-frontend && npm run build
+cd linkshrink-frontend && npm i &&npm run build
