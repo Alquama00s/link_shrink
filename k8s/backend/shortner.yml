@@ -31,7 +31,7 @@ spec:
             secretKeyRef:
               name: postgres-secret
               key: postgres-password
-        - name: DB_URL
+        - name: SPRING_DATASOURCE_URL
           valueFrom:
             configMapKeyRef:
               name: postgres-config
