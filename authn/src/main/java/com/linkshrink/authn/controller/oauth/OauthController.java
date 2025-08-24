@@ -19,6 +19,7 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
+@CrossOrigin(originPatterns = "${cors.origins:http://localhost*}")
 @RestController
 @RequestMapping("/oauth")
 public class OauthController {

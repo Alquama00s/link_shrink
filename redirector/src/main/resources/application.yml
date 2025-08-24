@@ -26,3 +26,6 @@ management:
 
 fallbacks:
   viewUrl: https://www.bing.com
+
+cors:
+  origins: http://http://10.211.10.30*

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.linkshrink.shortner.entity.Status;
 
+@CrossOrigin(originPatterns = "${cors.origins:http://localhost*}")
 @RestController
 @RequestMapping("/api/status")
 public class StatusController {

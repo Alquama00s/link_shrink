@@ -26,3 +26,6 @@ management:
   endpoint:
     prometheus:
       enabled: true
+
+cors:
+  origins: http://http://10.211.10.30*
