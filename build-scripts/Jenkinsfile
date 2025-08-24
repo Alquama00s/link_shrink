@@ -39,10 +39,11 @@ pipeline{
                 sh "cd k8s && bash app.sh"
             }
         }
-        post {
-                always {
-                    archiveArtifacts artifacts: 'k8s/*.yml', allowEmptyArchive: true
-                }
-            }
+
+    }
+    post {
+        always {
+            archiveArtifacts artifacts: 'k8s/*.yml', allowEmptyArchive: true
+        }
     }
 }
