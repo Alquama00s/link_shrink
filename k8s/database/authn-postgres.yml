@@ -20,7 +20,7 @@ spec:
           claimName: authn-pv-volume
       containers:
       - name: authn-postgres
-        image: alquama00s/linkshrink/authn/db
+        image: alquama00s/linkshrink/authndb
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5432

@@ -20,7 +20,7 @@ spec:
           claimName: redirector-pv-volume
       containers:
       - name: redirector-postgres
-        image: alquama00s/linkshrink/redirector/db
+        image: alquama00s/linkshrink/redirectordb
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5432
