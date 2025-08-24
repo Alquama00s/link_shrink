@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: shortner-deployment
+  name: authn-deployment
   labels:
-    app: shortner
+    app: authn
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: shortner
+      app: authn
   template:
     metadata:
       labels:
-        app: shortner
+        app: authn
     spec:
       containers:
-      - name: shortner
-        image: alquama00s/linkshrink/shortner
+      - name: authn
+        image: alquama00s/linkshrink/authn
         ports:
         - containerPort: 8080
         env:
