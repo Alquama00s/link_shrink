@@ -28,4 +28,4 @@ management:
       enabled: true
 
 cors:
-  origins: http://http://10.211.10.30*
+  origins: http://10.211.10.30*
