@@ -27,5 +27,7 @@ management:
 fallbacks:
   viewUrl: https://www.bing.com
 
-cors:
-  origins: http://10.211.10.30:*
+
+urls:
+  shortner: http://shortner-service:8080
+  authn: http://authn-service:8080
