@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redirector-deployment
+  labels:
+    app: redirector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redirector
+  template:
+    metadata:
+      labels:
+        app: redirector
+    spec:
+      containers:
+      - name: redirector
+        image: alquama00s/linkshrink/redirector
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-user
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-password
+        - name: DB_URL
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-config
+              key: postgres-url
+
+

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shortner-deployment
+  labels:
+    app: shortner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shortner
+  template:
+    metadata:
+      labels:
+        app: shortner
+    spec:
+      containers:
+      - name: shortner
+        image: alquama00s/linkshrink/shortner
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-user
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-password
+        - name: DB_URL
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-config
+              key: postgres-url
+
+
