@@ -9,7 +9,6 @@ spring:
     properties:
       hibernate:
         default_schema: linkshrink_sch
-        ddl-auto: update
 
         
   devtools:
