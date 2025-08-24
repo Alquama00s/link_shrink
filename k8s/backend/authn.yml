@@ -35,6 +35,6 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: postgres-config
-              key: postgres-url
+              key: authn-postgres-url
 
 
