@@ -16,7 +16,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(originPatterns = "${cors.origins:http://localhost*}")
+@CrossOrigin
 @RestController
 @RequestMapping("/api/urls")
 public class UrlsController extends ApiControllerAdvice{

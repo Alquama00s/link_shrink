@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
-@CrossOrigin(originPatterns = "${cors.origins:http://localhost*}")
+@CrossOrigin
 @Slf4j
 @RestController
 public class Redirector {
