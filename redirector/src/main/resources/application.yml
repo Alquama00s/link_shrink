@@ -29,5 +29,5 @@ fallbacks:
 
 
 urls:
-  shortner: http://shortner-service:8080
-  authn: http://authn-service:8080
+  shortner: http://10.211.10.30:8014
+  authn: http://10.211.10.30:8012
