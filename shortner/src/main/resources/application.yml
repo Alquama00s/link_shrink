@@ -31,4 +31,4 @@ fallbacks:
 frontend:
   uri: http://10.211.10.30:8011
 auth:
-  server: http://192.168.49.2:30200
+  server: http://authn-service:8080
