@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin(originPatterns = "${cors.origins:http://localhost*}")
 @RestController
 @RequestMapping("/api/role")
 @AllArgsConstructor
