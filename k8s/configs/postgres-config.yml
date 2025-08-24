@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: postgres-config
 data:
-  postgres-url: postgres-service
+  postgres-url: jdbc:postgresql://postgres-service/linkshrink
