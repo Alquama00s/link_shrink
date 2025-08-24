@@ -27,5 +27,5 @@ management:
     prometheus:
       enabled: true
 
-cors:
-  origins: http://10.211.10.30:*
+frontend:
+  uri: http://10.211.10.30:8011
