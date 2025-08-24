@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: linkshrink-postgres-deployment
+  name: linkshrink-red-postgres-deployment
   labels:
     app: redirector-postgres
 spec:
