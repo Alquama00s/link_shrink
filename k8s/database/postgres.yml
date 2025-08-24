@@ -21,6 +21,7 @@ spec:
       containers:
       - name: postgres
         image: alquama00s/linkshrink/db
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5432
         env:

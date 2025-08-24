@@ -17,6 +17,7 @@ spec:
       containers:
       - name: frontend
         image: alquama00s/linkshrink/frontend
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
         env:
