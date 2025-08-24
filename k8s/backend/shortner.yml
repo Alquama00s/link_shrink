@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: shortner
-        image: alquama00s/linkshrink/shortner
+        image: alquama00s/linkshrink/shortner:TAG
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080

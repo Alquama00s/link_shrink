@@ -43,7 +43,7 @@ pipeline{
     }
     post {
         always {
-            archiveArtifacts artifacts: 'k8s/*.yml', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'k8s/**/*.yml', allowEmptyArchive: true
         }
     }
 }

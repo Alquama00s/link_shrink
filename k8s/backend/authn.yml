@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: authn
-        image: alquama00s/linkshrink/authn
+        image: alquama00s/linkshrink/authn:TAG
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080

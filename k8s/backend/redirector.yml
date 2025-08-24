@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: redirector
-        image: alquama00s/linkshrink/redirector
+        image: alquama00s/linkshrink/redirector:TAG
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
