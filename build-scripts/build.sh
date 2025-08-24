@@ -5,7 +5,9 @@ for ms in "${microService[@]}"
 do
 echo "building $ms ---------------------------------------------"
 cd $ms
-rm -r build 
+if test -f build; then
+  rm -r build
+fi
 gradle bootJar
 cd ..
 done
