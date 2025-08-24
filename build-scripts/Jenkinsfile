@@ -29,7 +29,7 @@ pipeline{
         stage('Process Images'){
                     steps{
                         sh "docker image ls"
-                        sh "bash build-scripts/loadImages.sh 3.0.$BUILD_NUMBE"
+                        sh "bash build-scripts/loadImages.sh 3.0.$BUILD_NUMBER"
                     }
                 }
         stage('Deploy'){
