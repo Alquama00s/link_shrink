@@ -7,10 +7,12 @@
 @import 'ag-grid-community/styles/ag-theme-quartz.css';
 
 
-$primary-color:  #673AB7;
-$secondary-color: #009688;
-$secondary-color-dark: #017b6f;
-
+// $primary-color:  #673AB7;
+// $secondary-color: #009688;
+// $secondary-color-dark: #017b6f;
+$primary-color: #3F51B5;
+$secondary-color: #FFC107;
+$secondary-color-dark: #FFA000;
 
 @include mat.core();
 
