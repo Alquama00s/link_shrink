@@ -1,27 +1,45 @@
-# LinkshrinkFrontend
+# linkshrink-frontend
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.10.
+The frontend for LinkShrink — built with Angular. This README gives quick dev and build instructions and explains how to connect the UI to backend services while developing locally.
+
+## Requirements
+
+- Node.js (16+) and npm or yarn
+- Angular CLI (optional: `npm i -g @angular/cli`)
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Install dependencies and run the dev server:
 
-## Code scaffolding
+```bash
+cd linkshrink-frontend
+npm ci
+npm start          # same as `ng serve`, serves at http://localhost:4200
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Open http://localhost:4200 to view the app.
 
-## Build
+By default the app expects the API backends to be available locally; point the environment or proxy config to the API addresses during development.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Build (production)
 
-## Running unit tests
+```bash
+npm run build      # outputs build artifacts to dist/
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+# The repository also includes a Dockerfile under Docker/frontend used by the one-container demo
+```
 
-## Running end-to-end tests
+## Test
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```bash
+npm test
+```
 
-## Further help
+## Connecting to backend services
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+When running locally, the UI expects the API endpoints to be served at the ports used by the Spring Boot services (see root README for service port mapping). When the backend runs in Docker or Kubernetes the production build is usually served by an nginx container on port 80.
+
+## Notes
+
+- See the top-level README for overall project architecture and quick-start instructions.
+- If you'd like, I can add a `proxy.conf.json` example and environment profiles so the frontend can be pointed easily to local Spring Boot instances.
