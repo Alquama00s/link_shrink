@@ -1,0 +1,90 @@
+services:
+  redis: 
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+  
+  authn-db:
+    build: 
+      context: .
+      dockerfile: Docker/database/authn/Dockerfile
+    networks:
+      - app-network
+    environment:
+      - POSTGRES_USER=authUser
+      - POSTGRES_PASSWORD=authUser_123
+    expose:
+      - 5432
+  
+  redirector-db:
+    build: 
+      context: .
+      dockerfile: Docker/database/redirector/Dockerfile
+    networks:
+      - app-network
+    environment:
+      - POSTGRES_USER=redirectUser
+      - POSTGRES_PASSWORD=redirectUser_123
+    expose:
+      - 5432
+  
+  authn:
+    build: 
+      context: .
+      dockerfile: authn/Dockerfile
+    depends_on:
+      - authn-db
+    networks:
+      - app-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://authn-db:5432/linkshrink
+      - SPRING_DATASOURCE_USERNAME=authUser
+      - SPRING_DATASOURCE_PASSWORD=authUser_123
+    expose:
+      - 8080
+  
+  shortner:
+    build: 
+      context: .
+      dockerfile: shortner/Dockerfile
+    depends_on:
+      - redirector-db
+    networks:
+      - app-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://redirector-db:5432/linkshrink
+      - SPRING_DATASOURCE_USERNAME=redirectUser
+      - SPRING_DATASOURCE_PASSWORD=redirectUser_123
+    expose:
+      - 8080
+
+  redirector:
+    build: 
+      context: .
+      dockerfile: redirector/Dockerfile
+    depends_on: 
+      - shortner
+    networks:
+      - app-network
+    environment:
+      - URLS_SHORTNER=http://shortner-service:8080
+      - URLS_AUTHN=http://authn-service:8080
+    expose:
+      - 8080
+  
+  frontend:
+    build: 
+      context: .
+      dockerfile: Docker/frontend/Dockerfile
+    ports:
+      - 8080:80
+    
+volumes:
+  redis_data:
+
+networks:
+  app-network:
+
+  

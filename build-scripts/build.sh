@@ -8,7 +8,7 @@ cd $ms
 if test -f build; then
   rm -r build
 fi
-gradle bootJar
+./gradlew bootJar
 cd ..
 done
 
