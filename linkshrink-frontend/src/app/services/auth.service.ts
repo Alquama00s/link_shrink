@@ -1,21 +1,23 @@
- import { HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, map, Observable, of } from 'rxjs';
-import { BaseService } from './base.service';
+import {
+  BehaviorSubject,
+  catchError,
+  map,
+  Observable,
+  of,
+  tap,
+  throwError,
+} from 'rxjs';
 import { Buffer } from 'buffer';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService extends BaseService {
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    protected override snackBar: MatSnackBar
-  ) {
-    super(snackBar);
+export class AuthService {
+  constructor(private http: HttpClient, private router: Router) {
     const tempToken = localStorage.getItem('token');
     if (!this.isExpired(tempToken)) {
       this.token.next(tempToken!);
@@ -24,8 +26,8 @@ export class AuthService extends BaseService {
 
   private token: BehaviorSubject<string> = new BehaviorSubject('');
   private savedProfile: any | null = null;
-  private authnUrl = 'http://localhost:8071';
-  private shortnerUrl = 'http://localhost:8072';
+  private authnUrl = 'http://localhost:8083';
+  private shortnerUrl = 'http://localhost:8082';
 
   private apiUrl = 'https://jsonplaceholder.typicode.com/posts';
 
@@ -34,22 +36,16 @@ export class AuthService extends BaseService {
       email,
       password,
     };
-    return this.http
-      .post<any>(this.authnUrl + '/api/user/login', req)
-      .pipe((res) => {
-        res.subscribe({
-          next: (res) => {
-            this.token.next(res.token);
-            localStorage.setItem('token', res.token);
-          },
-          error: (res) => this.onError(res),
-        });
-        return res;
-      });
+    return this.http.post<any>(this.authnUrl + '/api/user/login', req).pipe(
+      tap((res) => {
+        this.token.next(res.token);
+        localStorage.setItem('token', res.token);
+      })
+    );
   }
 
   logOut() {
-    this.token.next("");
+    this.token.next('');
     localStorage.clear();
     this.router.navigate(['web', 'login']);
   }
@@ -60,12 +56,7 @@ export class AuthService extends BaseService {
       email,
       password,
     };
-    return this.http
-      .post<any>(this.authnUrl + '/api/user/register', req)
-      .pipe((resp) => {
-        resp.subscribe({ error: (res) => this.onError(res) });
-        return resp;
-      });
+    return this.http.post<any>(this.authnUrl + '/api/user/register', req);
   }
 
   isExpired(token: string | null): boolean {
@@ -85,18 +76,12 @@ export class AuthService extends BaseService {
   profile(): Observable<any> {
     if (this.savedProfile != null) return of(this.savedProfile);
     return this.http
-      .get(this.shortnerUrl + '/api/user/profile', {
-        headers: this.getheaders(),
-      })
-      .pipe((res) => {
-        res.subscribe({
-          next: (res) => {
-            this.savedProfile = res;
-          },
-          error: (res) => this.onError(res),
-        });
-        return res;
-      });
+      .get(this.shortnerUrl + '/api/user/profile')
+      .pipe(
+        tap((res) => {
+          this.savedProfile = res;
+        })
+      );
   }
 
   isLoggedIn(): Observable<boolean> {

@@ -1,24 +1,35 @@
 <div class="background">
   <div class="popup-form">
-    <form>
+    <form [formGroup]="signUpForm">
       <mat-form-field>
         <mat-label>Name</mat-label>
-        <input matInput [(ngModel)]="name" name="password" />
+        <input
+        aria-label="name"
+        matInput formControlName="name" />
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Email</mat-label>
-        <input matInput [(ngModel)]="email" name="email" />
+        <input
+        aria-label="email"
+        matInput formControlName="email" />
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Password</mat-label>
-        <input matInput [(ngModel)]="password" name="password" />
+        <input
+        aria-label="password"
+        type="password"
+        matInput formControlName="password" />
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Re enter password</mat-label>
-        <input matInput [(ngModel)]="reEnterPassword" name="reEnterPassword" />
+        <input
+        matInput
+        aria-label="re enter password"
+        type="password"
+        formControlName="reEnterPassword" />
       </mat-form-field>
 
       <button mat-flat-button color="primary" (click)="signUp()">
