@@ -4,7 +4,7 @@ resource "aws_key_pair" "my_key" {
 }
 
 resource "aws_instance" "public_instance" {
-  ami           = "ami-0360c520857e3138f" # Example AMI, update as needed
+  ami           = "ami-0360c520857e3138f" 
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.public.id
   security_groups = [aws_security_group.public_sg.id]
@@ -12,7 +12,7 @@ resource "aws_instance" "public_instance" {
 }
 
 resource "aws_instance" "private_instance" {
-  ami           = "ami-0360c520857e3138f" # Example AMI, update as needed
+  ami           = "ami-0360c520857e3138f" 
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.private.id
   security_groups = [aws_security_group.private_sg.id]

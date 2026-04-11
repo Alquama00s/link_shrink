@@ -24,8 +24,8 @@ export class AuthService extends BaseService {
 
   private token: BehaviorSubject<string> = new BehaviorSubject('');
   private savedProfile: any | null = null;
-  private authnUrl = 'http://authn:8080';
-  private shortnerUrl = 'http://shortner:8080';
+  private authnUrl = 'http://localhost:8071';
+  private shortnerUrl = 'http://localhost:8072';
 
   private apiUrl = 'https://jsonplaceholder.typicode.com/posts';
 

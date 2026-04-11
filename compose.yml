@@ -13,7 +13,6 @@ services:
     networks:
       - app-network
     environment:
-      - POSTGRES_USER=authUser
       - POSTGRES_PASSWORD=authUser_123
     expose:
       - 5432
@@ -25,61 +24,72 @@ services:
     networks:
       - app-network
     environment:
-      - POSTGRES_USER=redirectUser
       - POSTGRES_PASSWORD=redirectUser_123
     expose:
       - 5432
   
   authn:
     build: 
-      context: .
-      dockerfile: authn/Dockerfile
+      context: authn
     depends_on:
       - authn-db
     networks:
       - app-network
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://authn-db:5432/linkshrink
-      - SPRING_DATASOURCE_USERNAME=authUser
+      - SPRING_DATASOURCE_USERNAME=backend
       - SPRING_DATASOURCE_PASSWORD=authUser_123
-    expose:
-      - 8080
+      - FRONTEND_URI=http://localhost:4200
+
+    ports:
+      - 8071:8080
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 5s
+      retries: 5
   
   shortner:
     build: 
-      context: .
-      dockerfile: shortner/Dockerfile
+      context: shortner
     depends_on:
       - redirector-db
+      - authn
     networks:
       - app-network
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://redirector-db:5432/linkshrink
-      - SPRING_DATASOURCE_USERNAME=redirectUser
+      - SPRING_DATASOURCE_USERNAME=backend
       - SPRING_DATASOURCE_PASSWORD=redirectUser_123
-    expose:
-      - 8080
+      - URLS_SHORTNER=http://shortner:8080
+      - URLS_AUTHN=http://authn:8080
+      - FRONTEND_URI=http://localhost:4200
+
+    ports:
+      - 8072:8080
 
   redirector:
     build: 
-      context: .
-      dockerfile: redirector/Dockerfile
+      context: redirector
     depends_on: 
       - shortner
+      - authn
     networks:
       - app-network
     environment:
-      - URLS_SHORTNER=http://shortner-service:8080
-      - URLS_AUTHN=http://authn-service:8080
-    expose:
-      - 8080
+      - URLS_SHORTNER=http://shortner:8080
+      - URLS_AUTHN=http://authn:8080
+      - FRONTEND_URI=http://localhost:4200
+    ports:
+      - 8073:8081
   
   frontend:
     build: 
       context: .
       dockerfile: Docker/frontend/Dockerfile
+    networks:
+      - app-network
     ports:
-      - 8080:80
+      - 4200:80
     
 volumes:
   redis_data:
