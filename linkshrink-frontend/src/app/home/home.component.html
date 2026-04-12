@@ -11,17 +11,23 @@
 </div>
 
 <div *ngIf="showForm" class="popup-form">
-  <form>
+  <form [formGroup]="urlForm">
     <mat-form-field>
       <mat-label>Url</mat-label>
-      <input matInput [(ngModel)]="longUrl" name="longUrl" />
+      <input matInput
+      aria-label="long url"
+      formControlName="longUrl" />
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>short url</mat-label>
-      <input matInput [(ngModel)]="shortUrl" name="shortUrl" />
+      <input matInput
+      aria-label="short url"
+      formControlName="shortUrl" />
     </mat-form-field>
-
+    @for (sug of suggestions;track sug) {
+        <div class="suggestion-box" (click)="onSuggestionClick(sug)">{{sug}}</div>
+    }
     <div class="button-box">
       <button mat-flat-button color="primary" (click)="addUrl()">Submit</button>
       <button
@@ -34,4 +40,5 @@
       </button>
     </div>
   </form>
+
 </div>

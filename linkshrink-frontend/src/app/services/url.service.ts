@@ -24,5 +24,11 @@ export class UrlService {
       .post(this.baseUrl + '/api/urls/create', url)
   }
 
+   getSuggestion(url: string): Observable<any>{
+    return this.http.post(this.baseUrl + '/api/urls/suggest', {
+      longUrl: url
+    });
+   }
+
   login() {}
 }
