@@ -7,8 +7,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const snackBar = inject(MatSnackBar);
   return next(req).pipe(
     catchError((err) => {
-      console.log(err)
-      const msg = err.error.message ?? 'something went wrong';
+      const msg = err.error?.message ?? 'something went wrong';
       snackBar.open(msg, undefined, {
         duration: 1500,
         panelClass: ['snack-bar-red'],

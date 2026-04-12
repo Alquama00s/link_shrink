@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit {
   openForm() {
     this.showForm = true;
     this.subscription = this.urlForm.get('longUrl')!.valueChanges.subscribe((res) => {
-      debounceTime(1000)
+      debounceTime(5000)
       if (res) {
         this.urlservice.getSuggestion(res).subscribe((resp) => {
           this.suggestions = resp.suggestions;
@@ -77,15 +77,10 @@ export class HomeComponent implements OnInit {
     this.urlservice
       .createUrl({
         longUrl: this.urlForm.get("longUrl")?.value??"",
-        shortUrl: this.urlForm.get("shortUrl")??"",
+        shortUrl: this.urlForm.get("shortUrl")?.value??"",
       })
       .subscribe({
         next: (val) => this.resetForm(val),
-        error: (err) =>
-          this.snackBar.open('error creating url', undefined, {
-            duration: 1500,
-            panelClass: ['snack-bar-red'],
-          }),
       });
 
     this.closeForm();

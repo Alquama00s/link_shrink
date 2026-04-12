@@ -10,7 +10,7 @@
   />
 </div>
 
-<div *ngIf="showForm" class="popup-form">
+<div [hidden]="!showForm" class="popup-form">
   <form [formGroup]="urlForm">
     <mat-form-field>
       <mat-label>Url</mat-label>
@@ -29,7 +29,11 @@
         <div class="suggestion-box" (click)="onSuggestionClick(sug)">{{sug}}</div>
     }
     <div class="button-box">
-      <button mat-flat-button color="primary" (click)="addUrl()">Submit</button>
+      <button mat-flat-button
+        color="primary"
+        (click)="addUrl()"
+        type="submit"
+      >Submit</button>
       <button
         mat-raised-button
         color="accent"
